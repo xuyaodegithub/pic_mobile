@@ -1,0 +1,47 @@
+@font-face {font-family: "iconfont";
+    src: url('iconfont.eot?t=1572572612382'); /* IE9 */
+    src: url('iconfont.eot?t=1572572612382#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAKsAAsAAAAABngAAAJdAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCCcAqBBIEMATYCJAMICwYABCAFhG0HMBuyBRHVi3myrw54Q1ejz2AnuAYRhONhcN9FrYnqjn0fwdPc57zs5poSkiImVQlAQgIKybK1gLYsT/+c4JEChxzykeJcMs3aCoAcMjHY3AxdoyIUS3Ke99N3pGMT8tOAa+on0NPbLw5obp0UlRwJOLDpALtw9GQbyNA3jF3gEp4TaKSbIWL6zPnLVTJrXSD279m1RZWLyjIrVEJdzdEsritVxYXiHdfC78ffUVFRKBOrZfHOGdtN/oldko7Xjq/3CTECOl0iYQgysbw2u1ASjEsaZbNe7Ksx+Emt5nvEXp2C/XVWfRPQBaruSe1qbrW+ADmeHoBho26j6NJk2522dy61v9d+170Tjy622V76wgN5513+eNsjLUR42LjlpccnHr2et/PE0mZfXzVxwqMuK7o8ynlYs5ZdWjYblnOe+3CaCq41GdRepuPpn/3G/dZPzauvGmfw+Xkbrqi9zBJUe/YFf0jdcyjrWstdZFVd6y8MGLW2QCONUIODrfwYa2t7O8VQaXtT/ga6pkgqfcjMDkGpsTGoU5mERgabdbqx1o5KIjfEIGcAQgvPUWjmBZIW3pOZ/Y5SO/9Rp0UkNLIyXNmYdVgglIwG1A+CbtU6XhZR4xXdK0vKakPhiXSGBCzjXCxcsCLNseN8u5XZgqVWYAevYc4NOrWImkfP3LdpsnUijbqVQUAoGQ1QPxB0q9afzKL0+Su6V5bU0lZTfCKdYXawGM09yIup9mq7l3fOt1sxW2CpFbCDRZhzA71+UUTNIz8i3TeTPc72NY3rW8oHVLIuLHsR9rykY0H+ZRgGAAAA') format('woff2'),
+    url('iconfont.woff?t=1572572612382') format('woff'),
+    url('iconfont.ttf?t=1572572612382') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+    url('iconfont.svg?t=1572572612382#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-xiazai:before {
+    content: "\e731";
+}
+
+.people .van-uploader,.people .van-uploader__input-wrapper{
+    display: block;
+    width: 100%;
+}
+
+.people .van-image-preview__index{
+    font-size: .54rem;
+    text-align: center;
+}
+.login .van-hairline--top-bottom::after, .login .van-hairline-unset--top-bottom::after{
+   border-width: 0;
+}
+.login .mess.pass .van-field__button{
+    width: 35%;
+    border-left: 1px solid #eee;
+}
+.login .mess.pass .send.van-button{
+    color: #ed1e56;
+    border: 0;
+    background-color: rgba(0,0,0,0);
+    padding: 0;
+    margin: 0;
+    height: auto;
+    line-height: normal;
+    font-size: .28rem;
+}

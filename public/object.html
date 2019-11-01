@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--//设置不缓存-->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Cache" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <!-- 忽略浏览器自动识别数字为电话号码 -->
+    <meta content="telephone=no" name="format-detection">
+    <!-- 忽略浏览器自动识别邮箱账号 -->
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+      .content {
+        margin-top: .3rem;
+        text-align: center;
+      }
+
+      .content > div {
+        background-color: #fff;
+        padding: .6rem 0;
+        margin-bottom: .4rem;
+      }
+
+      .content > div > p {
+        font-size: .28rem;
+        padding: 0 .4rem;
+        color: #535353;
+        line-height: .42rem;
+        margin-bottom: .3rem;
+      }
+
+      .content > div .flex {
+        justify-content: space-around;
+        padding: 0 .2rem;
+      }
+
+      .content > div .flex div {
+        width: 30%;
+      }
+
+      .content > div .flex h4 {
+        font-size: .28rem;
+        color: #333;
+        margin-bottom: .1rem;
+      }
+
+      .content > div .flex p {
+        font-size: .24rem;
+        color: #535353;
+      }
+
+      .content > div .flex div:nth-child(2) {
+        margin: 0 .6rem;
+      }
+
+      .content h3 {
+        font-size: .42rem;
+        margin-bottom: .6rem;
+        color: #333;
+      }
+
+      .content img {
+        display: block;
+        width: 100%;
+      }
+
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but picup_mobile doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="object"></div>
+    <div class="content">
+      <div>
+        <h3>强大</h3>
+        <p>令人惊叹的边缘细节，发丝抠图等可用于商业用途</p>
+        <img src="static/o_1.jpg" alt="">
+      </div>
+      <div>
+        <h3>高效</h3>
+        <p>批量处理& AI抠图& -键抠图& API集成，为您的生活节省时间</p>
+        <img src="static/c_3.jpg" alt="" style="margin-bottom: .1rem">
+        <div class="flex">
+          <div>
+            <h4>批量上传</h4>
+            <p>并行处理多个图像, 智能抠图</p>
+          </div>
+          <div>
+            <h4>在线一键抠图</h4>
+            <p>收藏网站随时使用，在线人像抠图</p>
+          </div>
+          <div>
+            <h4>API</h4>
+            <p>与系统无缝集成</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3>免费</h3>
+        <p>高达1000x1000像素，免费使用，是电子商务的最佳解决方案</p>
+        <img src="static/c_4.jpg" alt="">
+      </div>
+    </div>
+    <!-- built files will be auto injected -->
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                  var clientWidth = docEl.clientWidth;
+                  if (!clientWidth) return;
+                  if (clientWidth >= 750) {
+                    docEl.style.fontSize = '100px';
+                  } else {
+                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+                  }
+                };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<!--
+2013-9-30: Created.
+-->
+<svg>
+<metadata>
+Created by iconfont
+</metadata>
+<defs>
+
+<font id="iconfont" horiz-adv-x="1024" >
+  <font-face
+    font-family="iconfont"
+    font-weight="500"
+    font-stretch="normal"
+    units-per-em="1024"
+    ascent="896"
+    descent="-128"
+  />
+    <missing-glyph />
+    
+    <glyph glyph-name="xiazai" unicode="&#59185;" d="M450.56 75.52c4.48-4.48 10.88-7.04 16.64-8.96 3.84-1.92 8.32-2.56 12.8-2.56s8.96 0.64 12.8 2.56c6.4 1.28 12.16 3.84 16.64 8.96l313.6 313.6c14.08 14.08 14.08 35.84 0 49.92-14.08 14.08-35.84 14.08-49.92 0L512 177.92V736c0 17.92-14.08 32-32 32s-32-14.08-32-32v-558.08L186.88 439.04c-14.08 14.08-35.84 14.08-49.92 0-14.08-14.08-14.08-35.84 0-49.92l313.6-313.6zM864 0H96c-17.92 0-32-14.08-32-32s14.08-32 32-32h768c17.92 0 32 14.08 32 32s-14.08 32-32 32z"  horiz-adv-x="1024" />
+
+    
+
+
+  </font>
+</defs></svg>
