@@ -45,3 +45,13 @@
     line-height: normal;
     font-size: .28rem;
 }
+.price .van-radio__label{
+    flex: 1;
+    line-height: 1rem;
+}
+.price .van-radio{
+    padding: 0 .42rem;
+}
+.price .van-radio.active{
+    background-color:rgb(255,246,249) ;
+}

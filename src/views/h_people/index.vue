@@ -11,9 +11,17 @@
         </div>
         <div class="afterUp" v-if="afterUp">
             <div class="flex tags a-i">
-                <div @click="changeType(idx)" v-for="(item,idx) in choseList" :key="idx"
-                     :class="{active : selectType===idx}"><img :src="idx===0 ? Original :item.url"
-                                                               :class="{active : selectType===idx}" alt=""><span>{{item.title}}</span>
+                <div v-for="(item,idx) in choseList" :key="idx"
+                     :class="{active : selectType===idx}">
+                    <div v-if="idx!==2"  @click="changeType(idx)">
+                        <img :src="idx===0 ? Original :item.url" :class="{active : selectType===idx}" alt="">
+                        <span>{{item.title}}</span>
+                    </div>
+                    <div v-else class="pos">
+                        <img :src="item.url" :class="{active : selectType===idx}" alt="" class="te">
+                        <input type="color" id="color" @change="changeColor" style="opacity: 0">
+                        <span>背景颜色</span>
+                    </div>
                 </div>
             </div>
             <div class="btn flex">
@@ -21,7 +29,6 @@
                 <van-button round icon="icon iconfont icon-xiazai" @click="showPopup=!showPopup">保存图片</van-button>
             </div>
         </div>
-        <input type="color" id="color" @change="changeColor" style="display: none">
         <van-image-preview
                 close-on-popstate
                 v-model="show"
@@ -75,6 +82,7 @@
                 Original_Obj: '',//原图加载后对象
                 bg_Original: '',//去背景图链接
                 loadImgObj: '',//去背景图加载后对象
+                colorValue:'',
                 choseList: [
                     {title: '原图', url: b_4},
                     {title: '去背景', url: b_o},
@@ -99,6 +107,7 @@
         },
         methods: {
             changeType(idx) {
+                this.colorValue='';
                 if (idx === 2) document.getElementById( 'color' ).click();
                 if (this.selectType === idx) return;
                 this.selectType = idx;
@@ -117,7 +126,7 @@
                 this.Original = file.content;
                 imgs.crossOrigin = '';
                 imgs.onload = () => {
-                    this.Original_Obj = imgs
+                    // this.Original_Obj = imgs
                     EXIF.getData( imgs, function () {
                         _self.imgInfo = EXIF.getTag( this, "Orientation" ) ? EXIF.getTag( this, "Orientation" ) : 1;
                         param.set( 'orientation', _self.imgInfo );
@@ -130,7 +139,7 @@
                                     return
                                 }
                                 _self.imgMsg = res.data
-                                _self.loadImg( res.data.bgRemovedPreview )
+                                _self.loadImg( res.data )
                             } else {
                                 Toast( {duration: 1500, message: res.msg} )
                             }
@@ -150,7 +159,7 @@
                             if (res.data.status === 'success') {
                                 clearInterval( this.timer )
                                 this.imgMsg = res.data
-                                this.loadImg( res.data.bgRemovedPreview )
+                                this.loadImg( res.data )
                             } else Toast( {
                                 message: `当前人数过多,正在排队等待!当前位置${res.data.queueNumber}`,
                                 duration: 0,
@@ -164,38 +173,65 @@
                     } )
                 }, 3000 )
             },
-            loadImg(url) {
-                let oImg = new Image()
+            loadImg(item) {
+                let [one,two]=[false,false];
+                this.selectType=1;
+                let oImg = new Image();
                 oImg.crossOrigin = '';
                 oImg.onload = () => {
-                    this.loadImgObj = oImg
-                    this.bg_Original = url
-                    this.imgurl = url
-                    this.afterUp = true
-                    Toast.clear()
+                    this.loadImgObj = oImg;//预览图加载后对象
+                    this.bg_Original = item.bgRemovedPreview;
+                    this.imgurl = item.bgRemovedPreview;
+                    one=true;
+                    if(one && two) {
+                        this.afterUp = true;
+                        setShow()
+                        Toast.clear();
+                    }
                 }
-                oImg.src = url
+                oImg.src = item.bgRemovedPreview;
+                let oImg_o=new Image();
+                oImg_o.crossOrigin = '';
+                oImg_o.onload = () => {
+                    this.Original_Obj = oImg_o;
+                    two=true;
+                    if(one && two) {
+                        this.afterUp = true;
+                        setShow()
+                        Toast.clear();
+                    }
+                }
+                oImg_o.src = item.original
             },
             repeatUp() {
                 document.getElementsByClassName( 'van-uploader__input' )[0].click()
             },
             changeColor(e) {
-                console.log( e.target.value )
-                const vcolor = e.target.value
+                console.log( e.target.value );
+                this.selectType = 2;
+                this.colorValue=e.target.value;
+                this.imgurl =this.initBgcolor(this.loadImgObj,this.colorValue)
+            },
+            initBgcolor(bg,color){
                 let cans = document.createElement( 'canvas' )
                 const ctx = cans.getContext( '2d' )
-                cans.width = this.loadImgObj.width
-                cans.height = this.loadImgObj.height
-                ctx.fillStyle = vcolor
-                ctx.fillRect( 0, 0, cans.width, cans.height )
-                ctx.drawImage( this.loadImgObj, 0, 0 );
-                this.imgurl = cans.toDataURL( "image/png" )
+                cans.width =bg.width
+                cans.height = bg.height
+                if(color){
+                    ctx.fillStyle = color
+                    ctx.fillRect( 0, 0, cans.width, cans.height )
+                }
+                ctx.drawImage( bg, 0, 0 );
+                return cans.toDataURL( "image/png" )
             },
             SpecialEffects(k) {
+                this.imgurl = this.initSpecialEffects(this.loadImgObj,k)
+            },
+            initSpecialEffects(bg,k){
                 let can = document.createElement( 'canvas' )
                 const ctx = can.getContext( '2d' )
-                can.width = this.loadImgObj.width
-                can.height = this.loadImgObj.height
+                can.width = bg.width
+                can.height = bg.height
                 ctx.drawImage( this.Original_Obj, 0, 0, can.width, can.height )
                 let imgData = ctx.getImageData( 0, 0, can.width, can.height );
                 let newBg1 = imgData;
@@ -205,17 +241,29 @@
                 ctx.clearRect( 0, 0, can.width, can.height )
                 if (k === 1) ctx.putImageData( newBg4, 0, 0 );
                 else ctx.putImageData( newBg1, 0, 0 );
-                ctx.drawImage( this.loadImgObj, 0, 0, can.width, can.height )
-                this.imgurl = can.toDataURL( "image/png" )
+                ctx.drawImage( bg, 0, 0, can.width, can.height )
+                return can.toDataURL( "image/png" )
             },
             save(k) {
                 if (k === 1) {
-                    this.show = true
                     this.images = [this.imgurl]
+                    this.show = true;
                 } else {
+                    Toast.loading( {mask: true, message: '处理中...', duration: 0} );
                     downloadMattedImage( {fileId: this.fileId} ).then( res => {
                         if (!res.code) {
-
+                            let oImage=new Image()
+                            oImage.crossOrigin = '';
+                            oImage.onload=()=>{
+                                if(this.selectType===0)this.images=[this.initBgcolor(this.Original_Obj)];
+                                else  if(this.selectType===1)this.images=[this.initBgcolor(oImage)];
+                                else if(this.selectType===2)this.images=[this.initBgcolor(oImage,this.colorValue)];
+                                else if(this.selectType===3)this.images=[this.initSpecialEffects(oImage,1)];
+                                else this.images=[this.initSpecialEffects(oImage,2)];
+                                this.show = true;
+                                Toast.clear()
+                            }
+                            oImage.src=res.data
                         }
                     } )
                 }
@@ -259,8 +307,9 @@
             justify-content: space-between;
             text-align: center;
             margin-bottom: .46rem;
-
-            img {
+            img ,#color{
+                background-color: #fff;
+                overflow: hidden;
                 margin: 0 auto .15rem;
                 display: block;
                 width: .6rem;
@@ -268,7 +317,16 @@
                 border: 1px solid #eee;
                 border-radius: 50%;
             }
-
+            .pos{
+                position: relative;
+            }
+        #color{
+                position: absolute;
+                top: 0;
+                left: 50%;
+                margin-left: -0.3rem;
+                z-index:88 ;
+            }
             &.active, .active {
                 border-color: $theme;
                 color: $theme;

@@ -8,7 +8,7 @@ Object.keys(filters).map((val,index)=>{
 })
 
 
-import { Uploader,Button,ImagePreview,Cell, CellGroup,Icon,Toast,Popup,Tab,Tabs,Field  } from 'vant';
+import { Uploader,Button,ImagePreview,Cell, CellGroup,Icon,Toast,Popup,Tab,Tabs,Field,RadioGroup, Radio  } from 'vant';
 Vue.component(Uploader.name,Uploader)
 Vue.component(Button.name,Button)
 Vue.component(Cell.name,Cell)
@@ -18,6 +18,8 @@ Vue.component(Popup.name,Popup)
 Vue.component(Tab.name,Tab)
 Vue.component(Tabs.name,Tabs)
 Vue.component(Field.name,Field)
+Vue.component(RadioGroup.name,RadioGroup)
+Vue.component(Radio.name,Radio)
 Vue.use(ImagePreview)
 Vue.use(Toast)
 

@@ -283,7 +283,8 @@
                         const w=h*this.secBg.width/this.secBg.height;
                         // const w=this.secBg.width <= this.secBg.height ? (this.threeBg.width-100)*3/5 : this.threeBg.width;
                         // cantext.drawImage(bgImg,imsSetInfo[this.tidx].x,this.threeBg.height-h,imsSetInfo[this.tidx].w,h);
-                        cantext.drawImage(bgImg,x,this.threeBg.height-bgImg.height-150,w,h);
+                        console.log(h,x,w)
+                        cantext.drawImage(bgImg,x,this.threeBg.height-h-150,w,h);
                         this.imgmsg=can.toDataURL("image/png");
                         this.afterUp=true;
                         Toast.clear()

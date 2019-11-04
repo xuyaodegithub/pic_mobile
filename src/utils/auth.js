@@ -23,8 +23,8 @@ export function setToken(token) {
   // Cookies.set('foo', 'bar', {
   //   expires: inFifteenMinutes//不设置默认会话式储存，游览器关闭就删除
   // });
-  let str=JSON.stringify(token)
-  return sessionStorage.setItem(TokenKey, str)//存储是按照字符串存着，取出来后需要JSON.parse
+  // let str=JSON.stringify(token)
+  return sessionStorage.setItem(TokenKey, token)//存储是按照字符串存着，取出来后需要JSON.parse
 }
 
 export function removeToken() {

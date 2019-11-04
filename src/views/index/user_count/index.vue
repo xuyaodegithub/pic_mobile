@@ -4,29 +4,64 @@
             <div class="flex num a-i">
                 <div>
                     <p>下载高清大图</p>
-                    <p>剩余次数：10</p>
+                    <p>剩余次数：{{userSub.freeRemaining}}</p>
                 </div>
-                <van-button round >去充值</van-button>
+                <van-button round @click="$router.push('/price')">去充值</van-button>
             </div>
             <div class="apiset">
                 <p>API密钥</p>
-                <p>e59966a7200a4c5f8f557b93b6a81941 <van-icon name="replay" /></p>
+                <p>{{apiMsg}} <van-icon name="replay" @click="refreshApi" /></p>
                 <p class="flex a-i">阅读API文档 <van-icon name="arrow" /></p>
             </div>
             <div class="apiset">
                 <p>账户设置</p>
-                <p>手机号： 16605813146</p>
-                <p class="flex a-i">修改密码 <van-icon name="arrow" /></p>
+                <p>手机号： {{userInfo.mobile}}</p>
+                <p class="flex a-i" @click="$router.push('/change')">修改密码 <van-icon name="arrow" /></p>
             </div>
         </div>
 </template>
 
 <script>
     import vHeader from '@/components/h_header'
+    import { userApikey,userRefreshApikey,getUserInfo,userSubscribe } from '@/apis'
     export default {
         name: "index",
+        data(){
+            return {
+                userInfo:{},
+                apiMsg:'',
+                userSub:{}
+            }
+        },
         components:{
             vHeader
+        },
+        mounted(){
+            this.getApi()
+            this.getInfo()
+            this.userSubscribes()
+        },
+        methods:{
+            getApi(){
+                userApikey().then(res=>{
+                    if(!res.code)this.apiMsg=res.data
+                })
+            },
+            refreshApi(){
+                userRefreshApikey().then(res=>{
+                    if(!res.code)this.apiMsg=res.data
+                })
+            },
+            getInfo(){
+                getUserInfo().then(res=>{
+                    if(!res.code)this.userInfo=res.data
+                })
+            },
+            userSubscribes(){
+                userSubscribe().then(res=>{
+                    if(!res.code)this.userSub=res.data
+                })
+            }
         }
     }
 </script>
