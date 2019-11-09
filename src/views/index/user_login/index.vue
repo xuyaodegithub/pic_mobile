@@ -14,9 +14,10 @@
                 </div>
             </van-tab>
             <van-tab title="短信登录">
+                <v-yz @success="toShowCode" :visible.sync="showCode"></v-yz>
                 <div class="pass mess">
                     <van-field v-model="phone" placeholder="请输入手机号" type="tel" size="large"/>
-                    <van-field v-model="yzm" placeholder="请输入验证码" type="number" size="large"> <van-button slot="button" class="send" @click="sendCode">发送验证码</van-button></van-field>
+                    <van-field v-model="yzm" placeholder="请输入验证码" type="number" size="large"> <van-button slot="button" class="send" @click="send">{{timer ? timer :'发送验证码'}}</van-button></van-field>
                     <van-button round block @click="login">登录</van-button>
                     <div class="gore" @click="$router.push('/register')">快速注册</div>
                 </div>
@@ -29,6 +30,7 @@
     import vHeader from "@/components/h_header/index.vue"
     import { loginByMobile,sendCode,userLogin } from '@/apis'
     import { setToken,getToken,removeToken } from '@/utils/auth'
+    import vYz from '@/components/sliderYz/index.vue'
     import { Toast } from 'vant'
     export default {
         name: "index",
@@ -37,13 +39,31 @@
                 active:0,
                 phone:'',
                 pass:'',
-                yzm:''
+                yzm:'',
+                showCode:false,
+                timer:0
             }
         },
         components:{
-            vHeader
+            vHeader,vYz
         },
         methods:{
+            toShowCode(id){
+                const data={
+                    mobile:this.phone,
+                    image_code:id,
+                }
+                sendCode(data).then(res=>{
+                    if(!res.code){
+                        Toast( '短信发送成功' )
+                        this.timer=60
+                        let timer=setInterval(()=>{
+                            this.timer--
+                            if(!this.timer)clearInterval(timer)
+                        },1000)
+                    }
+                })
+            },
             login(){
                 if(!this.phone || this.phone.length!==11){
                     Toast('手机号格式不正确')
@@ -76,16 +96,22 @@
                     })
                 }
             },
-            sendCode(){
+            send(){
+                if(this.timer)return;
                 if(!this.phone || this.phone.length!==11){
                     Toast('手机号格式不正确')
                     return
                 }
-                sendCode({ mobile:this.phone}).then(res=>{
-                    if(!res.code){
-                        Toast( {duration: 1500, message: '短信发送成功'} )
-                    }
-                })
+                this.showCode=true
+                // if(!this.phone || this.phone.length!==11){
+                //     Toast('手机号格式不正确')
+                //     return
+                // }
+                // sendCode({ mobile:this.phone}).then(res=>{
+                //     if(!res.code){
+                //         Toast( {duration: 1500, message: '短信发送成功'} )
+                //     }
+                // })
             }
         }
     }

@@ -3,9 +3,10 @@
         <v-header></v-header>
         <div class="pass mess">
             <h3>修改密码</h3>
-            <van-field v-model="phone" placeholder="请设置新密码" type="password" size="large"/>
-            <van-field v-model="yzm" placeholder="确认新密码" type="password" size="large"></van-field>
-            <van-button round block>下一步</van-button>
+            <van-field v-model="oldpass" placeholder="请输入旧密码" type="password" size="large" v-if="!token"/>
+            <van-field v-model="newpass" placeholder="请设置新密码" type="password" size="large"/>
+            <van-field v-model="surepass" placeholder="确认新密码" type="password" size="large"></van-field>
+            <van-button round block @click="changepass">确认修改</van-button>
         </div>
     </div>
 </template>
@@ -13,13 +14,15 @@
 <script>
     import vHeader from "@/components/h_header/index.vue";
     import { userResetPassword,userResetbyEmail } from '@/apis'
+    import { removeToken } from "../../../utils/auth";
+    import { Toast } from 'vant'
     export default {
         name: "index",
         data(){
             return {
-                phone:'',
-                yzm:'',
-                pass:''
+                oldpass:'',
+                newpass:'',
+                surepass:''
             }
         },
         computed:{
@@ -29,6 +32,43 @@
         },
         components:{
             vHeader
+        },
+        methods:{
+            changepass(){
+                if(!this.token){
+                    if(!this.oldpass || !this.newpass || !this.surepass){
+                        Toast({message:'密码不可为空',duration:1500})
+                        return
+                    }
+                    if(this.newpass!==this.surepass){
+                        Toast({message:'确认密码不一致',duration:1500})
+                        return
+                    }
+                    userResetPassword({oldPassword:this.oldpass,newPassword:this.newpass}).then(res=>{
+                        if(!res.code){
+                            Toast({message:'密码已修改完成'})
+                            removeToken()
+                            this.$router.replace('/login')
+                        }
+                    })
+                }else{
+                    if(!this.newpass || !this.surepass){
+                        Toast({message:'密码不可为空',duration:1500})
+                        return
+                    }
+                    if(this.newpass!==this.surepass){
+                        Toast({message:'两次密码不一致',duration:1500})
+                        return
+                    }
+                    userResetbyEmail({newPassword:this.newpass,token:this.token}).then(res=>{
+                        if(!res.code){
+                            Toast({message:'密码已修改完成'})
+                            removeToken()
+                           this.$router.replace('/login')
+                        }
+                    })
+                }
+            }
         }
     }
 </script>

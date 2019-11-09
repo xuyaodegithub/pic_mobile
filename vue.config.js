@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');//打包时，显示进度条插件
+const Timestamp = new Date().getTime();//时间戳，解决缓存问题
 module.exports = {
     // publicPath: process.env.NODE_ENV === 'production' ? 'http://47.111.168.199:8080' : 'http://47.111.168.199:8080',
     publicPath:'./',
@@ -44,7 +45,7 @@ module.exports = {
             template: 'public/index.html',
             filename: 'index.html',
             // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
-            title: '首页',
+            title: '一键抠图神器',
             // chunks: ['chunk-vendors', 'chunk-common', 'index']
         }, people: {
             entry: 'src/views/h_people/index.js',
@@ -84,7 +85,11 @@ module.exports = {
                 "windows.jQuery":"jquery"
             }),
             new ProgressBarPlugin()
-        ]
+        ],
+        output: { // 输出重构  打包编译后的 文件名称  【模块名称.版本号.时间戳】
+            filename: `js/[name].${Timestamp}.js`,
+            chunkFilename: `js/[name].${Timestamp}.js`
+        },
     },
     // configureWebpack: config => {//如果你需要基于环境有条件地配置行为，或者想要直接修改配置，那就换成一个函数 (该函数会在环境变量被设置之后懒执行)。该方法的第一个参数会收到已经解析好的配置。在函数内，你可以直接修改配置，或者返回一个将会被合并的对象：
     //     if (process.env.NODE_ENV === 'production') {

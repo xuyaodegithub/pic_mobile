@@ -42,7 +42,9 @@
                     document.execCommand("Copy"); // 执行浏览器复制命令
                     oInput.className = 'oInput';
                     oInput.style.display='none';
+                    oInput.blur()
                     Toast('复制成功')
+
                 }
             },
             movetab(){

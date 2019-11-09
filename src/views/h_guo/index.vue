@@ -34,7 +34,7 @@
 				</van-image-preview>
 			</div>
 		</div>
-		<div class="APIs"><a href="http://www.picup.ai">www.picup.ai 提供智能抠图换背景技术API ，点击查看更多应用</a></div>
+		<div class="APIs"><a href="index.html">本页面由 www.picup.ai 提供智能抠图换背景技术API</a></div>
 	</section>
 </template>
 
@@ -79,9 +79,9 @@
 	import t18 from '@/assets/images/t18.jpg'
 	import t19 from '@/assets/images/t19.jpg'
 	import t20 from '@/assets/images/t20.jpg'
-	import tt from '@/assets/images/tip.png'
+	import tt from '@/assets/images/tip.jpg'
 	import {Toast,ImagePreview,Icon } from 'vant';
-	import ewm from '@/assets/images/ewm.png'
+	import ewm from '@/assets/images/ewm.jpg'
 	import { EXIF } from 'exif-js'
 	export default {
 		name: "index",
@@ -108,7 +108,13 @@
 			}
 		},
 		created(){
-			wxJssdkData(this)
+			const data={
+				title:'不论你在哪里——来与北京阅兵同框',
+				desc:'为祖国70周年庆生',
+				link:window.location.href,
+				imgUrl:'http://deeplor.oss-cn-hangzhou.aliyuncs.com/guoqing/share.jpg'
+			}
+			wxJssdkData(this,data)
 		},
 		mounted(){
 			this.initStatus()
@@ -181,6 +187,7 @@
 						const x=this.secBg.width <= this.secBg.height ? this.threeBg.width/5 : 0;
 						const w=this.secBg.width <= this.secBg.height ? this.threeBg.width*3/5 : this.threeBg.width;
 						// cantext.drawImage(bgImg,imsSetInfo[this.tidx].x,this.threeBg.height-h,imsSetInfo[this.tidx].w,h);
+						console.log(h,x,w)
 						cantext.drawImage(bgImg,x,this.threeBg.height-h,w,h);
 						this.imgmsg=can.toDataURL("image/png");
 						this.afterUp=true;
@@ -322,21 +329,17 @@
 			z-index: 1;
 		}
 		.APIs{
+			padding: .6rem;
 			a{
 				color: #f5f6ab;
 			}
 			font-size: .22rem;
-			position: absolute;
-			bottom: .28rem;
-			left: 0;
-			width: 100%;
 			text-align: center;
 			line-height: 1;
-			z-index: 2;
 		}
 		.title{
 			width: 5.36rem;
-			margin:0 auto .4rem;
+			margin:0 auto .2rem;
 			padding-top: .7rem;
 			img{
 				display: block;

@@ -11,12 +11,15 @@
             <div class="apiset">
                 <p>API密钥</p>
                 <p>{{apiMsg}} <van-icon name="replay" @click="refreshApi" /></p>
-                <p class="flex a-i">阅读API文档 <van-icon name="arrow" /></p>
+                <p class="flex a-i" @click="goapi">阅读API文档 <van-icon name="arrow" /></p>
             </div>
             <div class="apiset">
                 <p>账户设置</p>
-                <p>手机号： {{userInfo.mobile}}</p>
+                <p>手机号： {{userInfos.mobile}}</p>
                 <p class="flex a-i" @click="$router.push('/change')">修改密码 <van-icon name="arrow" /></p>
+            </div>
+            <div class="apiset" @click="unlogin">
+               退出登录
             </div>
         </div>
 </template>
@@ -24,6 +27,8 @@
 <script>
     import vHeader from '@/components/h_header'
     import { userApikey,userRefreshApikey,getUserInfo,userSubscribe } from '@/apis'
+    import { setToken,getToken,removeToken } from '@/utils/auth'
+    import { mapGetters,mapActions } from 'vuex'
     export default {
         name: "index",
         data(){
@@ -36,12 +41,20 @@
         components:{
             vHeader
         },
+        computed:{
+            ...mapGetters([
+                'userInfos'
+            ])
+        },
         mounted(){
             this.getApi()
-            this.getInfo()
             this.userSubscribes()
+            if(getToken())this.getUserInfos()
         },
         methods:{
+            ...mapActions([
+                'getUserInfos'
+            ]),
             getApi(){
                 userApikey().then(res=>{
                     if(!res.code)this.apiMsg=res.data
@@ -52,15 +65,22 @@
                     if(!res.code)this.apiMsg=res.data
                 })
             },
-            getInfo(){
-                getUserInfo().then(res=>{
-                    if(!res.code)this.userInfo=res.data
-                })
-            },
+            // getInfo(){
+            //     getUserInfo().then(res=>{
+            //         if(!res.code)this.userInfo=res.data
+            //     })
+            // },
             userSubscribes(){
                 userSubscribe().then(res=>{
                     if(!res.code)this.userSub=res.data
                 })
+            },
+            unlogin(){
+                removeToken()
+                this.$router.replace('/login')
+            },
+            goapi(){
+                window.location.href='docsify/#/apis.md'
             }
         }
     }
@@ -104,5 +124,10 @@
         .van-icon{
             margin-left: .15rem;
         }
+    }
+    .apiset:last-child{
+        margin-top: 0;
+        text-align: center;
+        padding: .3rem 0;
     }
 </style>

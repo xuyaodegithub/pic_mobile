@@ -15,7 +15,7 @@
                 <!--      <van-icon name="arrow" />-->
                 <img :src="threeList[tidx]" alt="">
                 <van-uploader :after-read="afterRead" ref="upload">
-                    <div class="con">
+                    <div class="con" @touchstart="touchS">
                         <img :src="imgmsg" alt="">
                         <img :src="oneList[oidx]" alt="" class="oneBg" v-show="afterUp">
                     </div>
@@ -34,7 +34,7 @@
                 </van-image-preview>
             </div>
         </div>
-        <div class="APIs"><a href="http://www.picup.ai">www.picup.ai 提供智能抠图换背景技术API ，点击查看更多应用</a></div>
+        <div class="APIs"><a href="index.html">本页面由 www.picup.ai 提供智能抠图换背景技术API</a></div>
     </section>
 </template>
 
@@ -173,7 +173,7 @@
     import t42 from '@/assets/travle/42.jpg'
     import tt from '@/assets/travle/t_2.jpg'
     import {Toast,ImagePreview,Icon } from 'vant';
-    import ewm from '@/assets/images/ewm.png'
+    import ewm from '@/assets/travle/ewm.jpg'
     import { EXIF } from 'exif-js'
     export default {
         name: "index",
@@ -194,8 +194,8 @@
                 threeList:[t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20,
                     t21,t22,t23,t24,t25,t26,t27,t28,t29,t30,t31,t32,t33,t34,t35,t36,t37,t38,t39,t40,t41,t42,
                 ],
-                oidx:Math.floor(Math.random()*85),
-                tidx:Math.floor(Math.random()*42),
+                oidx:0,
+                tidx:0,
                 afterUp:false,
                 secBg:'',
                 threeBg:'',
@@ -204,14 +204,23 @@
                 images:[],
                 fileId:'',
                 timer:null,
-                imgInfo:''
+                imgInfo:'',
+                imgIdx:0
             }
         },
         created(){
-            wxJssdkData(this)
+            const data={
+                title:'一键旅拍------想拍去哪就拍去哪',
+                desc:'今天就要诗与远方',
+                link:window.location.href,
+                imgUrl:'http://guoqing.deeplor.com/img/share1.jpg'
+            }
+            wxJssdkData(this,data)
         },
         mounted(){
             this.initStatus()
+            this.shuffle(this.oneList)
+            this.shuffle(this.threeList)
             // this.initImg()
         },
         components:{
@@ -220,6 +229,10 @@
             vHeader
         },
         methods:{
+            touchS(e){
+                const d1=e.touches[0]
+                console.log(e.touches[0])
+            },
             initStatus(){
                 activePeople({id:1}).then(res=>{
                     if(!res.code){
@@ -228,6 +241,14 @@
                         else  this.initImg()
                     }
                 })
+            },
+             shuffle(arr) {
+                let m = arr.length;
+                while (m > 1){
+                    let index = Math.floor(Math.random() * m--);
+                    [arr[m] , arr[index]] = [arr[index] , arr[m]]
+                }
+                return arr;
             },
             afterRead(file, detail){
                 // this.imgmsg=file.content
@@ -276,15 +297,19 @@
                     bgImg.crossOrigin = '';
                     bgImg.onload=()=>{
                         this.secBg=bgImg;
-                        // const h=imsSetInfo[this.tidx].w*bgImg.height/bgImg.width;
-                        const h=this.secBg.width <= this.secBg.height ?  this.secBg.height > 520 ? 520 : this.secBg.height : ((this.threeBg.width-100)*3/5)*this.secBg.height/this.secBg.width > 520 ? 520 : ((this.threeBg.width-100)*3/5)*this.secBg.height/this.secBg.width ;
+                        // const h=imsSetInfo[this.tidx].w*bgImg.height/bgImg.width;this.secBg.height > 520 ? 520 : this.secBg.height :> 520 ? 520
+                        const h=this.secBg.width <= this.secBg.height ?   ((this.threeBg.width-100)*3/5)*this.secBg.height/this.secBg.width  : (this.threeBg.width-100)*this.secBg.height/this.secBg.width ;
                         const x= this.threeBg.width/2-(h*this.secBg.width/this.secBg.height)/2;
                         // const x=this.secBg.width <= this.secBg.height ? (this.threeBg.width/2-100)/5 : 0;
                         const w=h*this.secBg.width/this.secBg.height;
                         // const w=this.secBg.width <= this.secBg.height ? (this.threeBg.width-100)*3/5 : this.threeBg.width;
                         // cantext.drawImage(bgImg,imsSetInfo[this.tidx].x,this.threeBg.height-h,imsSetInfo[this.tidx].w,h);
                         console.log(h,x,w)
-                        cantext.drawImage(bgImg,x,this.threeBg.height-h-150,w,h);
+                        cantext.drawImage(bgImg,x,h>571 ? -((h-571)/2) : this.threeBg.height-h-150,w,h);
+                        cantext.save()
+                        cantext.clearRect(0,0,can.width,this.threeBg.height-672)
+                        cantext.clearRect(0,571,can.width,150)
+                        cantext.restore()
                         this.imgmsg=can.toDataURL("image/png");
                         this.afterUp=true;
                         Toast.clear()
@@ -294,9 +319,10 @@
                 oImg.src=oimg
             },
             changeot(){
-                this.oidx=Math.floor(Math.random()*this.oneList.length);
-                this.tidx=Math.floor(Math.random()*this.threeList.length);
+                this.oidx=this.oidx < this.oneList.length-1 ? this.oidx+=1 : 0;
+                this.tidx=this.tidx < this.threeList.length-1 ? this.tidx+=1 : 0;
                 let oimg=new Image(),can=document.createElement('canvas');
+                console.log(this.oidx,this.tidx)
                 oimg.crossOrigin = '';
                 oimg.onload=()=>{
                     this.threeBg=oimg
@@ -323,17 +349,22 @@
                         canvas.height=this.threeBg.height;
                         // const cantext=canvas.getContext('2d'),h=imsSetInfo[this.tidx].w*this.secBg.height/this.secBg.width;
                         const cantext=canvas.getContext('2d');
-                        const h=this.secBg.width <= this.secBg.height ?  this.secBg.height > 520 ? 520 : this.secBg.height : ((this.threeBg.width-100)*3/5)*this.secBg.height/this.secBg.width > 520 ? 520 : ((this.threeBg.width-100)*3/5)*this.secBg.height/this.secBg.width ;
+                        const h=this.secBg.width <= this.secBg.height ?   ((this.threeBg.width-100)*3/5)*this.secBg.height/this.secBg.width  : (this.threeBg.width-100)*this.secBg.height/this.secBg.width ;
                         const x= this.threeBg.width/2-(h*this.secBg.width/this.secBg.height)/2;
                         // const x=this.secBg.width <= this.secBg.height ? (this.threeBg.width/2-100)/5 : 0;
                         const w=h*this.secBg.width/this.secBg.height;
                         cantext.drawImage(this.threeBg,0,0);
-                        cantext.drawImage(this.secBg,x,this.threeBg.height-h-150,w,h);
+                        cantext.drawImage(this.secBg,x,h>571 ? -((h-571)/2) : this.threeBg.height-h-150,w,h);
+                        cantext.save()
+                        cantext.fillStyle='#fff'
+                        cantext.fillRect(0,0,canvas.width,51)
+                        cantext.fillRect(0,571,canvas.width,150)
+                        cantext.restore()
                         cantext.drawImage(oImgs,50,585);
                         let oEwm=new Image();
                         oEwm.crossOrigin = '';
                         oEwm.onload=()=>{
-                            cantext.drawImage(oEwm,905,580,130,130);
+                            cantext.drawImage(oEwm,905,580,120,130);
                             const imgurl=canvas.toDataURL("image/png")
                             this.images=[
                                 imgurl
@@ -426,21 +457,17 @@
             z-index: 1;
         }
         .APIs{
+            padding: .6rem;
             a{
                 color: #f5f6ab;
             }
             font-size: .22rem;
-            position: absolute;
-            bottom: .28rem;
-            left: 0;
-            width: 100%;
             text-align: center;
             line-height: 1;
-            z-index: 2;
         }
         .title{
             width: 5.36rem;
-            margin:0 auto .4rem;
+            margin:0 auto .2rem;
             padding-top: .7rem;
             img{
                 display: block;

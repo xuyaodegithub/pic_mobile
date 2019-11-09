@@ -29,54 +29,52 @@ export const loginByMobile=(data)=> https.get('/user/quickLoginByMobile',data);
 /**
  * 发送验证码
  **/
-export const sendCode=(data)=>{
-  return https.get('/user/sendSms',data)
-}
+export const sendCode=(data)=> https.get('/user/sendSms',data)
 /**
  * 用户登录
  **/
-export const userLogin=(data)=>{
-  return https.get('/user/login',data)
-}
+export const userLogin=(data)=>https.get('/user/login',data)
 /**
  * 获取apikey
  **/
-export const userApikey=(data)=>{
-  return https.get('/user/apikey',data)
-}
+export const userApikey=(data)=>https.get('/user/apikey',data)
 /**
  * 重新刷新apikey
  **/
-export const userRefreshApikey=(data)=>{
-  return https.get('/user/refreshApikey',data)
-}
+export const userRefreshApikey=(data)=>https.get('/user/refreshApikey',data)
 /**
  * 获取用户信息
  **/
-export const getUserInfo=(data)=>{
-  return https.get('/user/userInfo',data)
-}
+export const getUserInfo=(data)=>https.get('/user/userInfo',data)
 /**
  * 获取订阅列表
  **/
-export const subscriptionPlans=(data)=>{
-  return https.get('/order/subscriptionPlans',data)
-}
+export const subscriptionPlans=(data)=>https.get('/order/subscriptionPlans',data)
 /**
  *我的订阅
  **/
-export const userSubscribe=(data)=>{
-  return https.get('/order/mySubscription',data)
-}
+export const userSubscribe=(data)=>https.get('/order/mySubscription',data)
 /**
  * 修改密码
  **/
-export const userResetPassword=(data)=>{
-  return https.get('/user/changePassword',data)
-}
+export const userResetPassword=(data)=>https.get('/user/changePassword',data)
 /**
  * 通过token修改密码
  **/
-export const userResetbyEmail=(data)=>{
-  return https.get('/user/changePasswordByToken',data)
-}
+export const userResetbyEmail=(data)=>https.get('/user/changePasswordByToken',data)
+/**
+ * 通过短信获取token修改密码
+ **/
+export const getResetPasswordToken=(data)=>https.get('/user/getResetPasswordToken',data)
+/**
+ *获取验证图
+ **/
+export const userGetCaptcha=(data)=>https.get('/getCaptcha',data)
+/**
+ *获取验证结果
+ **/
+export const userGetvalidate=(data)=>https.get('/validate',data)
+/**
+ * 手机号注册
+ **/
+export const userRegister=(data)=>https.get('/user/registerByMobile',data)

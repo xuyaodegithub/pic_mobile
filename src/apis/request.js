@@ -28,22 +28,18 @@ instance.interceptors.response.use(function (response) {//为自定义axios设�
   if(res.code===0){
     return res
   }else if(res.code==1100){
+      Toast.clear()
     removeToken()
     window.location.href='index.html#/login'
   }  else{
-    Toast({
-      message:response.data.msg
-    })
+    Toast( {message:response.data.msg} )
     return res
     // return Promise.reject(response.data)
   }
 }, function (err) {
   // 对请求错误做些什么
   if (!navigator.onLine) {
-    Toast({//网络异常，请查看你的网络状态
-      type:'warning',
-      message:'网络异常，请查看你的网络状态'
-    })
+    Toast( '网络异常，请查看你的网络状态')
     return 'networkdisconnect';
   }
   return Promise.reject(err.response);

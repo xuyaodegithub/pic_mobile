@@ -17,7 +17,7 @@
         </div>
         <div class="fixed flex a-i">
             <span v-if="planList.length>0">￥{{(seleceItem.price/seleceItem.creditsPerMonth).toFixed(2)}}<i>/次</i></span>
-            <van-button round block>立即购买</van-button>
+            <van-button round block @click="$router.push('/concat')">联系我们购买</van-button>
         </div>
     </div>
 </template>
@@ -46,7 +46,7 @@
                 subscriptionPlans().then(res=>{
                     if(!res.code){
                         this.planList=res.data
-                        this.radio=res.data[res.data.length-1].planId
+                        this.radio=res.data[0].planId
                     }
                 })
             },

@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/',
-        name: '首页',
+        name: '一键抠图神器',
         component:()=> import(/* webpackChunkName: "indexs" */ '@/views/index/h_index/index.vue'),
     }, {
         path: '/more',

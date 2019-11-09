@@ -1,0 +1,114 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WG4BQ8P');
+  </script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../static/public.css">
+  <link rel="stylesheet" href="css/vue.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="icon" href="../smallLogo.jpg">
+  <title>API</title>
+  <style>
+    .h_header{
+      top: 0;
+      left: 0;
+      width: 100vw;
+      position: fixed;
+      height: 2.8rem;
+      background-color: #303030;
+      padding:0 1.2rem;
+      justify-content: space-between;
+      z-index: 88;
+    }
+
+    .h_header .active.pages{
+      right: 0;
+    }
+    .h_header img:first-child{
+      display: block;
+      width: 5.4rem;
+      height: 1.6rem;
+    }
+    .h_header img:nth-child(2){
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    .h_header .pages{
+      transition: all .3s;
+      position: absolute;
+      right: -100%;
+      top: 100%;
+      width: 6rem;
+      font-size: .75rem;
+      color: #fff;
+      text-align: center;
+      line-height: 2.5rem;
+      background-color: rgba(0,0,0,.8);
+      z-index: 10;
+    }
+    .h_header .pages > div:nth-child(2n+1),.h_header .pages >div:first-child{
+                                border-bottom: 1px solid rgba(255,255,255,.3);
+                              }
+  </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WG4BQ8P"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div id="h_header">
+  <div style="height:.9rem "></div>
+  <div class="h_header flex a-i">
+    <div>
+      <img src="../static/sureLogo.png"/>
+    </div>
+    <img src="../static/h_index.png" onclick="showTabs(event)"/>
+    <div class="pages">
+      <div onclick="changePage(event,'../index.html')">首页</div>
+      <div onclick="changePage(event,'../people.html')">人像抠图</div>
+      <div onclick="changePage(event,'../object.html')">物体抠图</div>
+      <div onclick="changePage(event,'../guo.html')">国庆同框</div>
+      <div onclick="changePage(event,'../travle.html')">一键旅拍</div>
+      <div onclick="changePage(event,'../index.html#/count')">我的账户</div>
+    </div>
+  </div>
+</div>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      //...
+    }
+    function changePage(e,url){
+     var e= e || window.event
+      e.stopPropagation()
+      window.location.href=url
+      document.getElementsByClassName('pages')[0].style.right='-100%'
+    }
+    function showTabs(e){
+      var e= e || window.event
+      e.stopPropagation()
+      const od=document.getElementsByClassName('pages')[0]
+      console.log(od.style.right)
+      if(!od.style.right || od.style.right==='-100%')od.style.right=0;
+      else od.style.right='-100%';
+    }
+    document.addEventListener('click',()=>{
+      document.getElementsByClassName('pages')[0].style.right='-100%'
+    })
+  </script>
+<script src="js/vue.js"></script>
+<!-- import JavaScript -->
+<!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+<script src="js/docsify.min.js"></script>
+</body>
+</html>

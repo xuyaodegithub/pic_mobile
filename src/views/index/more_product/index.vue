@@ -41,7 +41,7 @@
                     <!--                            <source :src="item" type="video/webm">-->
                     你的游览器暂不支持视频播放，换一个试试吧！
                 </video>
-                <img src="../../../assets/images/stop.png" alt="" @click="plays(1)">
+                <img src="../../../assets/images/vp1.jpg" alt="" @click="plays(1)">
             </div>
         </div>
         <div class="item">
@@ -54,8 +54,7 @@
                     <!--                            <source :src="item" type="video/webm">-->
                     你的游览器暂不支持视频播放，换一个试试吧！
                 </video>
-                <div class="cc"></div>
-                <img src="../../../assets/images/stop.png" alt="" @click="plays(2)">
+                <img src="../../../assets/images/vp2.jpg" alt="" @click="plays(2)" class="palyss">
             </div>
         </div>
         <div class="item">
@@ -119,33 +118,16 @@
                 display: block;
                 width: 100%;
             }
-            .f_v{
+            .f_v,.c_v{
                 display: block;
-                width: 100%;
-            }
-            .c_v{
-                display: block;
-                width: 50%;
-                margin: 0 auto;
+                width: 0;
+                height:0;
             }
             div{
                 position: relative;
-                img{
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    margin: -.5rem 0 0 -.5rem;
-                    z-index: 22;
+                .palyss{
+                    width: 50%;
                 }
-            }
-            .cc{
-                background-color: rgba(0, 0, 0, 0.2);
-                width: 50%;
-                height: 100%;
-                position: absolute;
-                top: 0;
-                left: 50%;
-                margin-left: -25%;
             }
         }
         .van-button{
