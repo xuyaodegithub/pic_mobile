@@ -1,6 +1,6 @@
 <template>
     <div class="concat">
-        <v-header></v-header>
+<!--        <v-header></v-header>-->
         <div class="emil">
             <h6>邮箱地址</h6>
             <p>pikachu@picup.ai</p>

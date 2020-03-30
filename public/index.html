@@ -27,6 +27,7 @@
     <!-- 忽略浏览器自动识别邮箱账号 -->
     <meta name="format-detection" content="email=no">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="applicable-device" content="mobile" />
     <meta name="Description" content="picup.ai提供一键在线抠图,AI抠图,智能抠图,人像抠图服务，图片风格迁移，帮助设计师和PS使用者加速图片处理">
     <meta name="Keywords" content="在线抠图,AI抠图,智能抠图,人像抠图,在线人像抠图,人物抠图,在线人物抠图,发丝抠图,一键抠图,ps抠图"/>
     <link rel="icon" href="smallLogo.jpg">
@@ -64,6 +65,20 @@
         win.addEventListener(resizeEvt, recalc, false);
         doc.addEventListener('DOMContentLoaded', recalc, false);
       })(document, window);
+      window.onload=function(){
+        const oImgBtn=document.querySelector('.imgBtn')
+        oImgBtn.addEventListener('click',function(e){
+          e.stopPropagation()
+          const oD=document.getElementsByClassName('pages')[0],oH=document.querySelector('.h_header')
+          console.log(oD.style.right)
+          if(!oD.style.right || oD.style.right==='-100%')oD.style.right='0';
+          else oD.style.right='-100%';
+        })
+        document.body.addEventListener('click',function(){
+          const oD=document.getElementsByClassName('pages')[0]
+          oD.style.right='-100%'
+        })
+      }
     </script>
   </body>
 </html>

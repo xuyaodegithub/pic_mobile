@@ -1,6 +1,6 @@
 <template>
     <div class="register login find">
-        <v-header></v-header>
+<!--        <v-header></v-header>-->
         <div class="pass mess">
             <h3>找回密码</h3>
             <van-field v-model="phone" placeholder="请输入手机号" type="tel" size="large"/>

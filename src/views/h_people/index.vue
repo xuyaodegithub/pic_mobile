@@ -15,17 +15,17 @@
             <div class="flex tags a-i">
                 <div v-for="(item,idx) in choseList" :key="idx"
                      :class="{active : selectType===idx}">
-                    <div v-if="idx!==2" @click="changeType(idx)">
+                    <div  @click="changeType(idx)">
                         <img :src="item.url" :class="{active : selectType===idx}" alt="" v-if="![0,3,4].includes(idx)">
                         <i v-else :class="{active : selectType===idx}"
                            :style="{backgroundImage: `url(${item.url})`}"></i>
                         <span>{{item.title}}</span>
                     </div>
-                    <div v-else class="pos">
-                        <img :src="item.url" :class="{active : selectType===idx}" alt="" class="te">
-                        <input type="color" id="color" @change="changeColor" style="opacity: 0">
-                        <span>背景颜色</span>
-                    </div>
+<!--                    <div v-else class="pos">-->
+<!--                        <img :src="item.url" :class="{active : selectType===idx}" alt="" class="te">-->
+<!--                        <input type="color" id="color" @change="changeColor" style="opacity: 0">-->
+<!--                        <span>背景颜色</span>-->
+<!--                    </div>-->
                 </div>
             </div>
             <div class="btn flex">
@@ -62,7 +62,7 @@
                       @click="changeBgType(idx)">{{item.title}}</span>
             </div>
             <div class="con" ref="imgs">
-                <div v-for="(it,idx) in bgList[bgType]" :key="idx" :class="{bgselect : bgIndex===idx}"
+                <div v-for="(it,idx) in nowList" :key="idx" :class="{bgselect : bgIndex===idx}"
                      @click="changebg(idx)">
                     <img :src="it" alt="">
                 </div>
@@ -76,11 +76,18 @@
                 </van-uploader>
             </div>
         </van-popup>
+        <van-popup v-model="showColorList" position="bottom" :overlay="false" class="showColorList">
+            <span @click="showColorList=false">完成</span>
+            <div class="color flex">
+                <div v-for="(item,idx) in colorList" :key="idx" :style="{backgroundColor:item}" @click="changeColor(item,idx)" :class="{active:selectC===idx}"></div>
+            </div>
+        </van-popup>
     </div>
 </template>
 
 <script>
-    import {uploadImgApi, getMattingInfo, downloadMattedImage} from '@/apis'
+    import {uploadImgApi, getMattingInfo, downloadMattedImage,userSubscribe} from '@/apis'
+    import { getToken,setToken,removeToken } from "../../utils/auth";
     import { mapGetters,mapActions } from 'vuex'
     import JSManipulate from '../../utils/jsmanipulate.js'
     import b_o from '@/assets/images/b_o.png'
@@ -169,7 +176,7 @@
     import {Toast, Dialog} from 'vant'
     import op from '@/assets/images/opacity.jpg'
     import {wxJssdkData} from '@/apis/wxJssdk.js'
-
+    import { BrowserInfo } from '@/utils'
     export default {
         name: "index",
         data() {
@@ -199,6 +206,7 @@
                     {title: '手绘'},
                     {title: '颜色'},
                 ],
+                nowList: [bg1, bg2, bg3, bg4, bg5, bg6, bg7, bg8, bg9, bg10, bg11, bg12, bg13, bg14, bg15, bg16, bg17, bg18, bg19, bg20, bg21],
                 bgList: [
                     [bg1, bg2, bg3, bg4, bg5, bg6, bg7, bg8, bg9, bg10, bg11, bg12, bg13, bg14, bg15, bg16, bg17, bg18, bg19, bg20, bg21],
                     [bgs1, bgs2, bgs3, bgs4, bgs5, bgs6, bgs7, bgs8, bgs9, bgs10, bgs11, bgs12, bgs13, bgs14, bgs15, bgs16, bgs17, bgs18, bgs19, bgs20, bgs21, bgs22, bgs23,],
@@ -213,7 +221,23 @@
                 images: [],
                 uploadBg:'',
                 sec_bg_obj:'',//当前选中背景加载后对象
-                bg_or_obj:''//原图比例去背景加载后对象
+                bg_or_obj:'',//原图比例去背景加载后对象
+                showColorList:false,//色板
+                colorList:[
+                    '#fc0615','#ff7f02','#ffff11','#1cff12','#1bffff','#0000fe','#fc01fc','#7f0f7f','#986633','#ffffff','#7f7f7f','#000000',
+                    '#ffffff','#ebebeb','#d6d6d6','#c2c2c2','#adadad','#999999','#858585','#707070','#5c5c5c','#474747','#333333','#000000',
+                    '#12374a','#061a55','#10033b','#2e063b','#3c091a','#5c0f07','#5b1f05','#563309','#583c0c','#676113','#4f5613','#273e14',
+                    '#154d66','#0f2f7c','#190950','#451058','#551428','#81190c','#7b2a0c','#7b4a10','#795813','#8c8614','#71761a','#38571c',
+                    '#0a6d8d','#1542a9','#2a0876','#621c7e','#781d3e','#b51d12','#ae3d13','#aa6917','#a77a15','#c3bc14','#9aa40d','#4f7a28',
+                    '#158cb4','#1855d4','#371b94','#7a259e','#982550','#e32316','#db5017','#d4810b','#d39c0c','#f5eb17','#c3d119','#689d31',
+                    '#06a1d7','#1260fe','#4e22b5','#972abb','#ba2c5c','#ff3f1a','#fe690b','#fcaa18','#fec810','#fffc45','#d9ec38','#76bc3f',
+                    '#0fc7fd','#3c87fe','#5f2eec','#bf36f5','#e73a7c','#ff6050','#ff8647','#ffb43f','#fecb3e','#fef769','#e3ef65','#97d45f',
+                    '#54d6fa','#75a7ff','#874efd','#d257fd','#ef71a0','#fe8c82','#fea57d','#fec775','#fdda76','#fdf892','#ebf390','#b2dd8b',
+                    '#96e2fa','#a9c6fe','#b18cfd','#e391fd','#f4a4c1','#ffb4ae','#fec5aa','#ffd9a8','#fee4a9','#fefaba','#f4f6b7','#cce8b5',
+                    '#ccf0fe','#d3e2ff','#d9c8fe','#efcafe','#f9d3e0','#fedbd9','#ffe3d7','#feedd3','#fff1d4','#fffdde','#f7fadd','#e0eed5',
+                ],//色板
+                selectC:-1,//选择的颜色下标
+                subs:0
             }
         },
         computed: {
@@ -279,17 +303,22 @@
                 this.bgType = i
                 this.bgIndex = -1
                 this.$refs.imgs.scrollTo( 0, 0 )
+                this.nowList=[];
+                this.$nextTick(()=>{
+                    this.nowList=this.bgList[this.bgType];
+                })
             },
             changeType(idx) {
                 this.colorValue = '';
                 this.bgIndex= -1;
-                if (idx === 2) document.getElementById( 'color' ).click();
+                this.selectC= -1;
+                if (idx === 2) this.showColorList=true;
                 if (idx === 5) this.showBg = true;
                 if (this.selectType === idx) return;
                 this.selectType = idx;
                 if (idx === 0) this.imgurl = this.Original;
                 else if (idx === 1) this.imgurl = this.bg_Original;
-                else if (idx === 2) document.getElementById( 'color' ).click();
+                else if (idx === 2) this.showColorList=true;
                 else if (idx === 3) this.SpecialEffects( 1 );
                 else if (idx === 4) this.SpecialEffects( 2 );
                 else this.showBg = true
@@ -305,6 +334,7 @@
                 imgs.onload = () => {
                     EXIF.getData( imgs, function () {
                         _self.imgInfo = EXIF.getTag( this, "Orientation" ) ? EXIF.getTag( this, "Orientation" ) : 1;
+                        console.log(EXIF.getTag( this, "Orientation" ))
                         param.set( 'orientation', _self.imgInfo );
                         param.set( 'mattingType', 1 )
                         uploadImgApi( param ).then( res => {
@@ -355,6 +385,7 @@
                 this.bg_or_obj = '';
                 this.uploadBg='';
                 this.choseList[0].url = item.original
+                this.Original = item.original
                 this.bg_Original = item.bgRemovedPreview;
                 this.imgurl = item.bgRemovedPreview;
                 let oImg = new Image();
@@ -390,16 +421,17 @@
                         Toast.clear();
                     }
                 }
-                oImg_o.src = item.original
+                oImg_o.src = item.original + `?str=${Math.random()}`
                 this.bgIndex = -1
             },
             repeatUp() {
                 document.getElementsByClassName( 'van-uploader__input' )[0].click()
             },
-            changeColor(e) {
-                console.log( e.target.value );
+            changeColor(c,idx) {
+                // console.log( e.target.value );
+                this.selectC=idx;
                 this.selectType = 2;
-                this.colorValue = e.target.value;
+                this.colorValue = c;
                 this.imgurl = this.initBgcolor( this.loadImgObj, this.colorValue )
             },
             initBgcolor(bg, color) {
@@ -515,10 +547,10 @@
                     this.m_top=`${(xh-imgH)/2}px`;
                     img.style.cssText=`height:auto;width:100%;margin:0 auto;`;
                 };
-                console.log(xh,imgH,bh)
             },
         },
         mounted(){
+            // alert(BrowserInfo.isWeixin)
         },
     }
 </script>
@@ -708,6 +740,7 @@
                 margin-right: .2rem;
                 border-radius: .1rem;
                 overflow: hidden;
+                background-color: #eee;
 
                 &.acive {
                     border: 1px solid $theme;
@@ -735,6 +768,33 @@
                 .van-icon{
                     margin-right: .15rem;
                 }
+            }
+        }
+    }
+    .showColorList{
+        background-color: #F6F6F6;
+        padding-top: .8rem;
+        span{
+            position: absolute;
+            top: .26rem;
+            right: 0;
+            color: #1f75fc;
+            font-size: .28rem;
+            padding: 0 .26rem;
+            line-height: 1;
+        }
+        .color{
+            flex-wrap: wrap;
+            width: 100%;
+            div{
+                width: 8.33%;
+                height: .52rem;
+            }
+            .active{
+                box-shadow: 0 0 8px #fff inset;
+            }
+            div:first-child{
+                margin-bottom: .2rem;
             }
         }
     }

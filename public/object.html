@@ -27,6 +27,7 @@
     <!-- 忽略浏览器自动识别邮箱账号 -->
     <meta name="format-detection" content="email=no">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="applicable-device" content="mobile" />
     <meta name="Description" content="picup.ai提供一键在线抠图,AI抠图,智能抠图,人像抠图服务，图片风格迁移，帮助设计师和PS使用者加速图片处理">
     <meta name="Keywords" content="在线抠图,AI抠图,智能抠图,人像抠图,在线人像抠图,人物抠图,在线人物抠图,发丝抠图,一键抠图,ps抠图"/>
     <link rel="icon" href="smallLogo.jpg">
@@ -127,11 +128,11 @@
           </div>
         </div>
       </div>
-      <div>
-        <h3>免费</h3>
-        <p>高达1000x1000像素，免费使用，是电子商务的最佳解决方案</p>
-        <img src="static/c_4.jpg" alt="">
-      </div>
+<!--      <div>-->
+<!--        <h3>免费</h3>-->
+<!--        <p>高达1000x1000像素，免费使用，是电子商务的最佳解决方案</p>-->
+<!--        <img src="static/c_4.jpg" alt="">-->
+<!--      </div>-->
     </div>
     <!-- built files will be auto injected -->
     <script>
@@ -155,6 +156,20 @@
         let oDiv = document.getElementById( 'content' )
         if (i) oDiv.style.display = 'block'
         else oDiv.style.display = 'none'
+      }
+      window.onload=function(){
+        const oImgBtn=document.querySelector('.imgBtn')
+        oImgBtn.addEventListener('click',function(e){
+          e.stopPropagation()
+          const oD=document.getElementsByClassName('pages')[0],oH=document.querySelector('.h_header')
+          console.log(oD.style.right)
+          if(!oD.style.right || oD.style.right==='-100%')oD.style.right='0';
+          else oD.style.right='-100%';
+        })
+        document.body.addEventListener('click',function(){
+          const oD=document.getElementsByClassName('pages')[0]
+          oD.style.right='-100%'
+        })
       }
     </script>
   </body>

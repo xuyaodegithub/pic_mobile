@@ -5,8 +5,8 @@
 			<div>
 				<img src="../../assets/images/sureLogo.png"/>
 			</div>
-			<img src="../../assets/images/h_index.png" @click.stop="show=!show"/>
-			<div class="pages" :class="{active : show}">
+			<img src="../../assets/images/h_index.png" class="imgBtn"/>
+			<div class="pages">
 				<div v-for="(item,idx) in pageList" :key="idx" @click.stop="changePage(item)">{{item.title}}</div>
 			</div>
 		</div>
@@ -34,24 +34,27 @@
 			changePage(item){
 				if(item.title==='我的账户' && !getToken()){
 					window.location.href='index.html#/login'
+					document.getElementsByClassName('pages')[0].style.right='-100%'
 					return
 				}
 				if(item.title.indexOf(document.title)>-1){
 					this.show=false
+					document.getElementsByClassName('pages')[0].style.right='-100%'
 					return;
 				}
 				window.location.href=item.url;
+				document.getElementsByClassName('pages')[0].style.right='-100%'
 			}
         },
-		mounted() {
-        	document.addEventListener('click',()=>{
-        		this.show=false
-			})
+		created() {
+        	// document.addEventListener('click',()=>{
+        	// 	this.show=false
+			// })
 		},
         destroyed() {
-            document.removeEventListener('click',()=>{
-                this.show=false
-            })
+            // window.removeEventListener('click',()=>{
+            //     this.show=false
+            // })
         }
     }
 </script>

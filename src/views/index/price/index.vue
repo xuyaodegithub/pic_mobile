@@ -1,6 +1,6 @@
 <template>
     <div class="price">
-        <v-header></v-header>
+<!--        <v-header></v-header>-->
         <h3>获取高分辨率图像</h3>
         <p>1图像消耗1次</p>
         <van-radio-group v-model="radio" checked-color="#ed1e56" @change="change">

@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <v-header></v-header>
+<!--        <v-header></v-header>-->
         <van-tabs v-model="active">
             <van-tab title="密码登录">
                 <div class="pass">
@@ -139,7 +139,7 @@
         }
         .gore{
             justify-content: space-between;
-            font-size: .32rem;
+            font-size: .28rem;
             width: 90%;
             margin: 0 auto;
             color: #333;

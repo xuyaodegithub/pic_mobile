@@ -261,8 +261,9 @@
                 imgs.onload=()=>{
                     EXIF.getData(imgs, function() {
                         _self.imgInfo = EXIF.getTag(this, "Orientation") ? EXIF.getTag(this, "Orientation") : 1;
+                        // alert(EXIF.getTag(this, "Orientation"))
+                        _self.canvasImg(file.content,file.file.name)
                     });
-                    this.canvasImg(file.content,file.file.name)
                 }
 
                 // uploadImgApi(param).then(res=>{
@@ -305,16 +306,17 @@
                         // const w=this.secBg.width <= this.secBg.height ? (this.threeBg.width-100)*3/5 : this.threeBg.width;
                         // cantext.drawImage(bgImg,imsSetInfo[this.tidx].x,this.threeBg.height-h,imsSetInfo[this.tidx].w,h);
                         console.log(h,x,w)
-                        cantext.drawImage(bgImg,x,h>571 ? -((h-571)/2) : this.threeBg.height-h-150,w,h);
-                        cantext.save()
-                        cantext.clearRect(0,0,can.width,this.threeBg.height-672)
-                        cantext.clearRect(0,571,can.width,150)
-                        cantext.restore()
+                        cantext.drawImage(bgImg,x,h>570 ? -((h-570)/2) : this.threeBg.height-h-150,w,h);
+                        // cantext.save()
+                        cantext.clearRect(0,0,can.width,50)
+                        cantext.clearRect(0,570,can.width,150)
+                        // cantext.restore()
                         this.imgmsg=can.toDataURL("image/png");
                         this.afterUp=true;
                         Toast.clear()
                     }
                     bgImg.src=img
+                    // document.body.appendChild(bgImg)
                 }
                 oImg.src=oimg
             },
@@ -354,11 +356,11 @@
                         // const x=this.secBg.width <= this.secBg.height ? (this.threeBg.width/2-100)/5 : 0;
                         const w=h*this.secBg.width/this.secBg.height;
                         cantext.drawImage(this.threeBg,0,0);
-                        cantext.drawImage(this.secBg,x,h>571 ? -((h-571)/2) : this.threeBg.height-h-150,w,h);
+                        cantext.drawImage(this.secBg,x,h>570 ? -((h-570)/2) : this.threeBg.height-h-150,w,h);
                         cantext.save()
                         cantext.fillStyle='#fff'
-                        cantext.fillRect(0,0,canvas.width,51)
-                        cantext.fillRect(0,571,canvas.width,150)
+                        cantext.fillRect(0,0,canvas.width,50)
+                        cantext.fillRect(0,570,canvas.width,150)
                         cantext.restore()
                         cantext.drawImage(oImgs,50,585);
                         let oEwm=new Image();
@@ -413,7 +415,7 @@
                     const cantext=canva.getContext('2d')
                     cantext.drawImage(oImg,0,0,canva.width,canva.height)
                     canva.toBlob((blob)=>{
-                        console.log(blob)
+                        console.log(blob);
                         let param = new FormData();
                         param.append('file', blob, '111.jpg');
                         param.set('orientation',this.imgInfo);
@@ -422,7 +424,7 @@
                                 this.fileId = res.data.fileId;
                                 setFiled(res.data.fileId,1);
                                 if(res.data.status!=='success'){
-                                    this.pollingImg()
+                                    this.pollingImg();
                                     return
                                 }
                                 this.drawInfo(res.data.bgRemovedPreview)
@@ -505,7 +507,7 @@
                 margin-top: .23rem;
             }
             .con{
-                border: 2px solid #fee8ae;
+                /*border: 2px solid #fee8ae;*/
                 img{
                     display: block;
                     width: 100%;

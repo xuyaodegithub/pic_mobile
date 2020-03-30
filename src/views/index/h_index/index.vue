@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-header></v-header>
+<!--        <v-header></v-header>-->
         <div class="tabs">
             <div class="names">功能</div>
             <div class="flex a-i">

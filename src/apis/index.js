@@ -78,3 +78,9 @@ export const userGetvalidate=(data)=>https.get('/validate',data)
  * 手机号注册
  **/
 export const userRegister=(data)=>https.get('/user/registerByMobile',data)
+/**
+ *获取邀请码
+ **/
+export const userGetInvitation=(data)=>{
+    return https.get('/user/getInvitation',data)
+}

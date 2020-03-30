@@ -1,19 +1,29 @@
 <template>
     <div class="register login">
-        <v-header></v-header>
+<!--        <v-header></v-header>-->
                 <div class="pass mess">
                     <h3>注册</h3>
-                    <van-field v-model="phone" placeholder="请输入手机号" type="tel" size="large"/>
-                    <van-field v-model="yzm" placeholder="请输入验证码" type="number" size="large"> <van-button slot="button" class="send"  @click="send">{{timer ? timer :'发送验证码'}}</van-button></van-field>
-                    <van-field v-model="pass" placeholder="请设置密码" type="password" size="large"/>
+                    <van-field v-model="phone" placeholder="请输入手机号" type="tel" size="large" required/>
+                    <van-field v-model="yzm" placeholder="请输入验证码" type="number" size="large" required> <van-button slot="button" class="send"  @click="send">{{timer ? timer :'发送验证码'}}</van-button></van-field>
+                    <van-field v-model="pass" placeholder="请设置密码" type="password" size="large" required/>
+                    <van-field v-model="yqma" placeholder="( 可不填 )邀请码，可以增加20次免费下载" type="text" size="large"/>
+                    <span style="color: #3d8fd1;margin-top: .2rem;display: inline-block;padding-left:.4rem " @click="dialogVisible=true">如何获取邀请码？</span>
                     <div class="gore m-y">
-                        完成此注册，即表明您同意了我们的 <i>使用条款和隐私策略</i>
+                        完成此注册，即表明您同意了我们的 <i @click="knowTk">使用条款和隐私策略</i>
                     </div>
                     <van-button round block @click="resetPass">注册</van-button>
                     <div class="gore">
                         已有账号，<span @click="$router.push('/login')">马上登录</span>
                     </div>
                 </div>
+        <van-popup v-model="dialogVisible" closeable>
+            <div class="conss">
+                <div class="title">如何获取邀请码</div><!--订阅计划-{{selectRadio2.creditsPerMonth}}能量/月-->
+                <div class="price">您可以咨询您身边的朋友，还可以加我微信索取
+                </div>
+                <img src="@/assets/images/buyEwm.png" alt="">
+            </div>
+        </van-popup>
         <v-yz @success="toShowCode" :visible.sync="showCode"></v-yz>
     </div>
 </template>
@@ -31,13 +41,18 @@
                 yzm:'',
                 pass:'',
                 showCode:false,
-                timer:0
+                timer:0,
+                dialogVisible:false,
+                yqma:''
             }
         },
         components:{
             vHeader,vYz
         },
         methods:{
+            knowTk(){
+                window.location.href='docsify/#/registerdoc_terms.md'
+            },
             toShowCode(id){
                 const data={
                     mobile:this.phone,
@@ -76,9 +91,11 @@
                     password:this.pass,
                     validate_code:this.yzm,
                 }
+                if(this.yqma)data.invitation=this.yqma;
                 userRegister( data ).then( res => {
                     if (!res.code) {
-                        this.beforSet=false
+                        Toast('注册成功')
+                        this.$router.replace('/login')
                     }
                 } )
             }
@@ -89,6 +106,27 @@
 <style scoped lang="scss">
 .register{
     padding: .95rem .4rem;
+    .van-popup{
+        width: 70%;
+    }
+    .conss{
+        padding:.4rem;
+        font-size: .28rem;
+        color: #333;
+        line-height: .48rem;
+        text-align: center;
+        .title{
+            font-size: .36rem;
+            margin-bottom: .2rem;
+        }
+        .price{
+            font-size: .24rem;
+            color: #a8a8a8;
+        }
+        img{
+            display: block;
+        }
+    }
     .pass{
         background-color: #fff;
         padding-bottom: .75rem;

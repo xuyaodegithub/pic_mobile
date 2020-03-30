@@ -146,8 +146,8 @@
 				imgs.onload=()=>{
 					EXIF.getData(imgs, function() {
 						_self.imgInfo = EXIF.getTag(this, "Orientation") ? EXIF.getTag(this, "Orientation") : 1;
+						_self.canvasImg(file.content,file.file.name)
 					});
-					this.canvasImg(file.content,file.file.name)
 				}
 
 				// uploadImgApi(param).then(res=>{

@@ -1,6 +1,6 @@
 <template>
     <div class="register login change">
-        <v-header></v-header>
+<!--        <v-header></v-header>-->
         <div class="pass mess">
             <h3>修改密码</h3>
             <van-field v-model="oldpass" placeholder="请输入旧密码" type="password" size="large" v-if="!token"/>

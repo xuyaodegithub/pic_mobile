@@ -45,6 +45,9 @@
     line-height: normal;
     font-size: .28rem;
 }
+.login .van-tab span{
+    font-size: .4rem;
+}
 .price .van-radio__label{
     flex: 1;
     line-height: 1rem;

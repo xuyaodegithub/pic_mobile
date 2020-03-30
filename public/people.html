@@ -28,6 +28,7 @@
     <meta name="format-detection" content="email=no">
     <meta name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta name="applicable-device" content="mobile" />
     <meta name="Description" content="picup.ai提供一键在线抠图,AI抠图,智能抠图,人像抠图服务，图片风格迁移，帮助设计师和PS使用者加速图片处理">
     <meta name="Keywords" content="在线抠图,AI抠图,智能抠图,人像抠图,在线人像抠图,人物抠图,在线人物抠图,发丝抠图,一键抠图,ps抠图"/>
     <link rel="icon" href="smallLogo.jpg">
@@ -167,11 +168,11 @@
                 </div>
             </div>
         </div>
-        <div>
-            <h3>免费</h3>
-            <p>高达1000x1000像素，免费使用，是电子商务的最佳解决方案</p>
-            <img src="static/c_4.jpg" alt="">
-        </div>
+<!--        <div>-->
+<!--            <h3>免费</h3>-->
+<!--            <p>高达500x500像素，免费使用，是电子商务的最佳解决方案</p>-->
+<!--            <img src="static/c_4.jpg" alt="">-->
+<!--        </div>-->
     </div>
     <div class="promle">
         <h3>常见问题</h3>
@@ -237,7 +238,7 @@
     <!--    </div>-->
         <div class="title flex a-i"><span class="span">Q</span><span>我想抠更多图片怎么办呢？</span></div>
         <div class="res">
-            目前产品推广阶段，所有1000*1000以下分辨率的图片是免费下载的。大分辨率的图片提供50次免费下载。更多的大分辨率图片下载就需要付费了。为了维持抠图的服务器特别是显卡GPU的大额支出，我们提供收费的大分辨率图片下载服务和API。付费升级账户后你可以使用独立的高性能服务器，抠图去背景更快、更多、更稳定。
+            目前产品推广阶段，所有500*500以下分辨率的图片是免费下载的。大分辨率的图片提供50次免费下载。更多的大分辨率图片下载就需要付费了。为了维持抠图的服务器特别是显卡GPU的大额支出，我们提供收费的大分辨率图片下载服务和API。付费升级账户后你可以使用独立的高性能服务器，抠图去背景更快、更多、更稳定。
         </div>
         <div class="title flex a-i"><span class="span">Q</span><span>我上传的图片会怎么处理呢？</span></div>
         <div class="res">
@@ -268,6 +269,20 @@
         let oDiv = document.getElementById( 'allCon' )
         if (i) oDiv.style.display = 'block'
         else oDiv.style.display = 'none'
+    }
+    window.onload=function(){
+        const oImgBtn=document.querySelector('.imgBtn')
+        oImgBtn.addEventListener('click',function(e){
+            e.stopPropagation()
+            const oD=document.getElementsByClassName('pages')[0],oH=document.querySelector('.h_header')
+            console.log(oD.style.right)
+            if(!oD.style.right || oD.style.right==='-100%')oD.style.right='0';
+            else oD.style.right='-100%';
+        })
+        document.body.addEventListener('click',function(){
+            const oD=document.getElementsByClassName('pages')[0]
+            oD.style.right='-100%'
+        })
     }
 </script>
 </body>
