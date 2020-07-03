@@ -210,3 +210,43 @@ export const debounce=(func,wait,immediate) =>{// wait 延迟执行毫秒数, im
         }
     }
 }
+export const compressImg = (files, k) => {
+    return new Promise( (resolve, reject) => {
+        let [can, reader] = [document.createElement( 'canvas' ), new FileReader()];
+        let canTxt = can.getContext( '2d' );
+        if (!k) {
+            reader.readAsDataURL( files );
+            reader.onloadend = (e) => {
+                let oImg = new Image();
+                oImg.crossOrigin = '';
+                oImg.onload = () => {
+                    can.width = oImg.width > oImg.height ? (oImg.width > 1024 ? 1024 : oImg.width) : (oImg.height > 1024 ? oImg.width * 1024 / oImg.height : oImg.width);
+                    can.height = oImg.width > oImg.height ? (oImg.width > 1024 ? 1024 * oImg.height / oImg.width : oImg.height) : (oImg.height > 1024 ? 1024 : oImg.height);
+                    canTxt.drawImage( oImg, 0, 0, can.width, can.height )
+                    can.toBlob( (blob) => {
+                        resolve( blob,'image/jpeg', )
+                    } )
+                };
+                oImg.src = reader.result;
+            }
+            reader.onerror = (err) => {
+                reject( err )
+            }
+        } else {
+            let oImg = new Image();
+            oImg.crossOrigin = '';
+            oImg.onload = () => {
+                can.width = oImg.width > oImg.height ? (oImg.width > 1024 ? 1024 : oImg.width) : (oImg.height > 1024 ? oImg.width * 1024 / oImg.height : oImg.width);
+                can.height = oImg.width > oImg.height ? (oImg.width > 1024 ? 1024 * oImg.height / oImg.width : oImg.height) : (oImg.height > 1024 ? 1024 : oImg.height);
+                canTxt.drawImage( oImg, 0, 0, can.width, can.height )
+                can.toBlob( (blob) => {
+                    resolve( blob )
+                } )
+            };
+            oImg.src = files + `?id=${Math.random()}`;
+            oImg.onerror = (err) => {
+                reject( err )
+            }
+        }
+    } )
+}

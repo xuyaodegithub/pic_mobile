@@ -52,8 +52,10 @@
                 <span>{{imgMsg.originalWidth}}x{{imgMsg.originalHeight}}</span><span>1</span>
                 <van-button round @click="save(2)">下载</van-button>
             </div>
+            <div class="flex a-i weibo" @click="copyLink"><img src="@/assets/images/weibo.png" alt="">微博进入用户注意</div>
             <div class="num">
-                当前可用次数：<i>0</i> <span @click="goPay">去充值</span>
+                当前可用次数：<i> {{userSubscribe ? userSubscribe.freeRemaining +
+                userSubscribe.monthRemaining : 0}} </i> <span @click="goPay">去充值</span>
             </div>
         </van-popup>
         <van-popup v-model="showBg" position="bottom" closeable :overlay="false" class="showBgP">
@@ -237,11 +239,14 @@
                     '#ccf0fe','#d3e2ff','#d9c8fe','#efcafe','#f9d3e0','#fedbd9','#ffe3d7','#feedd3','#fff1d4','#fffdde','#f7fadd','#e0eed5',
                 ],//色板
                 selectC:-1,//选择的颜色下标
-                subs:0
+                subs:0,
+                userSubscribe:0
             }
         },
         computed: {
-
+            ...mapGetters([
+                'userInfos'
+            ])
         },
         components: {
             vHeader
@@ -256,6 +261,9 @@
             wxJssdkData( this, data )
         },
         methods: {
+            ...mapActions([
+                'getUserInfos'
+            ]),
             afterReadBg(file) {//自定义上传背景
                 const bgurl=file.content;
                 let oimg=new Image()
@@ -548,9 +556,32 @@
                     img.style.cssText=`height:auto;width:100%;margin:0 auto;`;
                 };
             },
+            copyLink(){
+                Dialog.alert({
+                    title: '提示',
+                    message: '微博浏览器会将png格式保存为JPG格式，需要原图的用户请使用普通手机浏览器打开m.picup.shop',
+                    confirmButtonText:"点击复制链接"
+                }).then(() => {
+                    let Url2=`http://m.picup.shop`;
+                    let oInput = document.createElement('input');
+                    oInput.value = Url2;
+                    document.body.appendChild(oInput);
+                    oInput.select(); // 选择对象
+                    document.execCommand("Copy"); // 执行浏览器复制命令
+                    // oInput.className = 'oInput';
+                    oInput.style.display='none';
+                    oInput.blur()
+                    Toast('复制成功')
+                });
+            }
         },
         mounted(){
             // alert(BrowserInfo.isWeixin)
+            if(getToken()){
+                userSubscribe().then(res=>{
+                    this.userSubscribe=res.data
+                })
+            }
         },
     }
 </script>

@@ -3,7 +3,7 @@
 		<div style="height:.9rem "></div>
 		<div class="h_header flex a-i">
 			<div>
-				<img src="../../assets/images/sureLogo.png"/>
+                <a href="index.html"><img src="../../assets/images/sureLogo.png"/></a>
 			</div>
 			<img src="../../assets/images/h_index.png" class="imgBtn"/>
 			<div class="pages">
@@ -23,6 +23,9 @@
 					{url:'index.html',title:'首页'},
 					{url:'people.html',title:'人像抠图'},
 					{url:'object.html',title:'物体抠图'},
+					{url:'headCutout.html',title:'头像抠图'},
+					{url:'beautify.html',title:'一键美化'},
+					{url:'repairImg.html',title:'图片修复'},
 					{url:'guo.html',title:'国庆同框'},
 					{url:'travle.html',title:'一键旅拍'},
 					{url:'index.html#/count',title:'我的账户'},
@@ -32,6 +35,7 @@
         },
         methods: {
 			changePage(item){
+				console.log(item)
 				if(item.title==='我的账户' && !getToken()){
 					window.location.href='index.html#/login'
 					document.getElementsByClassName('pages')[0].style.right='-100%'

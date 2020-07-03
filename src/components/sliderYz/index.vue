@@ -130,7 +130,7 @@
             }
         },
         mounted() {
-            console.log(this.$listeners)
+            // console.log(this.$listeners)
             window.addEventListener( 'touchmove', this.moves )
             window.addEventListener( 'touchend', this.ups )
         },

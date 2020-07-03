@@ -61,6 +61,27 @@ module.exports = {
             // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
             title: '物体抠图',
             // chunks: ['chunk-vendors', 'chunk-common', 'index']
+        },header: {
+            entry: 'src/views/h_header/index.js',
+            template: 'public/headCutout.html',
+            filename: 'headCutout.html',
+            // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
+            title: '头像抠图',
+            // chunks: ['chunk-vendors', 'chunk-common', 'index']
+        },beautify: {
+            entry: 'src/views/h_beautify/index.js',
+            template: 'public/beautify.html',
+            filename: 'beautify.html',
+            // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
+            title: '一键美化',
+            // chunks: ['chunk-vendors', 'chunk-common', 'index']
+        },repairImg: {
+            entry: 'src/views/h_repairImg/index.js',
+            template: 'public/repairImg.html',
+            filename: 'repairImg.html',
+            // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
+            title: '图片修复',
+            // chunks: ['chunk-vendors', 'chunk-common', 'index']
         },guoqing: {
             entry: 'src/views/h_guo/index.js',
             template: 'public/guo.html',
@@ -74,6 +95,13 @@ module.exports = {
             filename: 'travle.html',
             // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
             title: '一键旅拍',
+            // chunks: ['chunk-vendors', 'chunk-common', 'index']
+        },apis: {
+            entry: 'src/views/apis/index.js',
+            template: 'public/apis.html',
+            filename: 'apis.html',
+            // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
+            title: 'apis',
             // chunks: ['chunk-vendors', 'chunk-common', 'index']
         },
     },

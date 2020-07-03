@@ -1,2 +1,19 @@
-$theme:#ed1e56;
-$to:#21a9e8;
+$theme: #ed1e56;
+$to: #21a9e8;
+$bea: #2ed8b4;
+$head: #f75191;
+$repir: #4254e6;
+.weibo {
+  width: 50%;
+  font-size: .24rem !important;
+  color: #F0A000 !important;
+  background-color: #F9F6DF !important;
+  margin: 0 0 0 100%!important;
+  padding: .1rem .2rem;
+  //position: relative;
+  //right: .3rem;
+  transform: translate(-100%,-50%)
+}
+.weibo img{
+  margin-right:.1rem;
+}

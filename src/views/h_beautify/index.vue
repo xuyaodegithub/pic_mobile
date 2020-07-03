@@ -2,7 +2,8 @@
     <div class="people">
         <v-header></v-header>
         <div class="main flex" :class="{afterp_b : afterUp}" @click="showBg=false">
-            <div :style="{'background-image':selectType===1 ? `url(${op})` : 'none','margin-top':m_top}" class="mainimg">
+            <div :style="{'background-image':selectType===1 ? `url(${op})` : 'none','margin-top':m_top}"
+                 class="mainimg">
                 <img :src="imgurl" alt="" class="imgsss">
             </div>
         </div>
@@ -12,22 +13,17 @@
             </van-uploader>
         </div>
         <div class="afterUp" v-show="afterUp" ref="afters">
-            <div class="flex tags a-i">
-                <div v-for="(item,idx) in choseList" :key="idx"
-                     :class="{active : selectType===idx}">
-                    <div  @click="changeType(idx)">
-                        <img :src="item.url" :class="{active : selectType===idx}" alt="" v-if="![0,3,4].includes(idx)">
-                        <i v-else :class="{active : selectType===idx}"
-                           :style="{backgroundImage: `url(${item.url})`}"></i>
-                        <span>{{item.title}}</span>
-                    </div>
-                    <!--                    <div v-else class="pos">-->
-                    <!--                        <img :src="item.url" :class="{active : selectType===idx}" alt="" class="te">-->
-                    <!--                        <input type="color" id="color" @change="changeColor" style="opacity: 0">-->
-                    <!--                        <span>背景颜色</span>-->
-                    <!--                    </div>-->
-                </div>
-            </div>
+<!--            <div class="flex tags a-i">-->
+<!--                <div v-for="(item,idx) in choseList" :key="idx"-->
+<!--                     :class="{active : selectType===idx}">-->
+<!--                    <div @click="changeType(idx)">-->
+<!--                        <img :src="item.url" :class="{active : selectType===idx}" alt="" v-if="![0,3,4].includes(idx)">-->
+<!--                        <i v-else :class="{active : selectType===idx}"-->
+<!--                           :style="{backgroundImage: `url(${item.url})`}"></i>-->
+<!--                        <span>{{item.title}}</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="btn flex">
                 <van-button round @click="repeatUp">重新上传</van-button>
                 <van-button round icon="icon iconfont icon-xiazai" @click="showPopup=!showPopup">保存图片</van-button>
@@ -42,7 +38,7 @@
                 <van-icon name="down"/>
             </template>
         </van-image-preview>
-        <van-popup v-model="showPopup" position="bottom" closeable  class="populp">
+        <van-popup v-model="showPopup" position="bottom" closeable class="populp">
             <div class="flex a-i"><span>尺寸</span><span>消耗次数</span></div>
             <div class="flex a-i"><span>{{imgMsg.previewWidth}}x{{imgMsg.previewHeight}}</span><span>0</span>
                 <van-button round @click="save(1)">下载</van-button>
@@ -72,7 +68,7 @@
             <div class="bth">
                 <van-uploader :after-read="afterReadBg" :max-count="1">
                     <div class="flex a-i">
-                        <van-icon name="photograph" color="#21a9e8" size=".34rem"/>
+                        <van-icon name="photograph" color="rgb(233,39,91)" size=".34rem"/>
                         上传背景
                     </div>
                 </van-uploader>
@@ -81,16 +77,17 @@
         <van-popup v-model="showColorList" position="bottom" :overlay="false" class="showColorList">
             <span @click="showColorList=false">完成</span>
             <div class="color flex">
-                <div v-for="(item,idx) in colorList" :key="idx" :style="{backgroundColor:item}" @click="changeColor(item,idx)" :class="{active:selectC===idx}"></div>
+                <div v-for="(item,idx) in colorList" :key="idx" :style="{backgroundColor:item}"
+                     @click="changeColor(item,idx)" :class="{active:selectC===idx}"></div>
             </div>
         </van-popup>
     </div>
 </template>
 
 <script>
-    import {uploadImgApi, getMattingInfo, downloadMattedImage,userSubscribe} from '@/apis'
-    import { getToken,setToken,removeToken } from "../../utils/auth";
-    import { mapGetters,mapActions } from 'vuex'
+    import {uploadImgApi, getMattingInfo, downloadMattedImage, userSubscribe,copyUpload} from '@/apis'
+    import {getToken, setToken, removeToken} from "../../utils/auth";
+    import {mapGetters, mapActions} from 'vuex'
     import JSManipulate from '../../utils/jsmanipulate.js'
     import b_o from '@/assets/images/b_o.png'
     import b_1 from '@/assets/images/b_1.png'
@@ -173,22 +170,23 @@
     import bgz29 from '@/assets/bgs3/29.jpg'
     import bgz30 from '@/assets/bgs3/30.jpg'
     import vHeader from '@/components/h_header'
-    import people from '@/assets/images/bride.jpg'
+    // import people from '@/assets/images/init_people.jpg'
     import {EXIF} from 'exif-js'
     import {Toast, Dialog} from 'vant'
     import op from '@/assets/images/opacity.jpg'
     import {wxJssdkData} from '@/apis/wxJssdk.js'
+    import {BrowserInfo} from '@/utils'
 
     export default {
         name: "index",
         data() {
             return {
-                m_top:0,
+                m_top: 0,
                 op,
                 show: false,
                 showPopup: false,
                 showBg: false,
-                imgurl: people,
+                imgurl: 'http://deeplor.oss-cn-hangzhou.aliyuncs.com/matting_preview/2020/06/17/8cc5a26506874f02aba307d2f5481abf.png',
                 imgInfo: 1,
                 Original: b_4,//原图链接
                 Original_Obj: '',//原图加载后对象
@@ -221,33 +219,30 @@
                 fileId: '',
                 imgMsg: '',//抠图返回结果
                 images: [],
-                uploadBg:'',
-                sec_bg_obj:'',//当前选中背景加载后对象
-                bg_or_obj:'',//原图比例去背景加载后对象
-                showColorList:false,//色板
-                colorList:[
-                    '#fc0615','#ff7f02','#ffff11','#1cff12','#1bffff','#0000fe','#fc01fc','#7f0f7f','#986633','#ffffff','#7f7f7f','#000000',
-                    '#ffffff','#ebebeb','#d6d6d6','#c2c2c2','#adadad','#999999','#858585','#707070','#5c5c5c','#474747','#333333','#000000',
-                    '#12374a','#061a55','#10033b','#2e063b','#3c091a','#5c0f07','#5b1f05','#563309','#583c0c','#676113','#4f5613','#273e14',
-                    '#154d66','#0f2f7c','#190950','#451058','#551428','#81190c','#7b2a0c','#7b4a10','#795813','#8c8614','#71761a','#38571c',
-                    '#0a6d8d','#1542a9','#2a0876','#621c7e','#781d3e','#b51d12','#ae3d13','#aa6917','#a77a15','#c3bc14','#9aa40d','#4f7a28',
-                    '#158cb4','#1855d4','#371b94','#7a259e','#982550','#e32316','#db5017','#d4810b','#d39c0c','#f5eb17','#c3d119','#689d31',
-                    '#06a1d7','#1260fe','#4e22b5','#972abb','#ba2c5c','#ff3f1a','#fe690b','#fcaa18','#fec810','#fffc45','#d9ec38','#76bc3f',
-                    '#0fc7fd','#3c87fe','#5f2eec','#bf36f5','#e73a7c','#ff6050','#ff8647','#ffb43f','#fecb3e','#fef769','#e3ef65','#97d45f',
-                    '#54d6fa','#75a7ff','#874efd','#d257fd','#ef71a0','#fe8c82','#fea57d','#fec775','#fdda76','#fdf892','#ebf390','#b2dd8b',
-                    '#96e2fa','#a9c6fe','#b18cfd','#e391fd','#f4a4c1','#ffb4ae','#fec5aa','#ffd9a8','#fee4a9','#fefaba','#f4f6b7','#cce8b5',
-                    '#ccf0fe','#d3e2ff','#d9c8fe','#efcafe','#f9d3e0','#fedbd9','#ffe3d7','#feedd3','#fff1d4','#fffdde','#f7fadd','#e0eed5',
+                uploadBg: '',
+                sec_bg_obj: '',//当前选中背景加载后对象
+                bg_or_obj: '',//原图比例去背景加载后对象
+                showColorList: false,//色板
+                colorList: [
+                    '#fc0615', '#ff7f02', '#ffff11', '#1cff12', '#1bffff', '#0000fe', '#fc01fc', '#7f0f7f', '#986633', '#ffffff', '#7f7f7f', '#000000',
+                    '#ffffff', '#ebebeb', '#d6d6d6', '#c2c2c2', '#adadad', '#999999', '#858585', '#707070', '#5c5c5c', '#474747', '#333333', '#000000',
+                    '#12374a', '#061a55', '#10033b', '#2e063b', '#3c091a', '#5c0f07', '#5b1f05', '#563309', '#583c0c', '#676113', '#4f5613', '#273e14',
+                    '#154d66', '#0f2f7c', '#190950', '#451058', '#551428', '#81190c', '#7b2a0c', '#7b4a10', '#795813', '#8c8614', '#71761a', '#38571c',
+                    '#0a6d8d', '#1542a9', '#2a0876', '#621c7e', '#781d3e', '#b51d12', '#ae3d13', '#aa6917', '#a77a15', '#c3bc14', '#9aa40d', '#4f7a28',
+                    '#158cb4', '#1855d4', '#371b94', '#7a259e', '#982550', '#e32316', '#db5017', '#d4810b', '#d39c0c', '#f5eb17', '#c3d119', '#689d31',
+                    '#06a1d7', '#1260fe', '#4e22b5', '#972abb', '#ba2c5c', '#ff3f1a', '#fe690b', '#fcaa18', '#fec810', '#fffc45', '#d9ec38', '#76bc3f',
+                    '#0fc7fd', '#3c87fe', '#5f2eec', '#bf36f5', '#e73a7c', '#ff6050', '#ff8647', '#ffb43f', '#fecb3e', '#fef769', '#e3ef65', '#97d45f',
+                    '#54d6fa', '#75a7ff', '#874efd', '#d257fd', '#ef71a0', '#fe8c82', '#fea57d', '#fec775', '#fdda76', '#fdf892', '#ebf390', '#b2dd8b',
+                    '#96e2fa', '#a9c6fe', '#b18cfd', '#e391fd', '#f4a4c1', '#ffb4ae', '#fec5aa', '#ffd9a8', '#fee4a9', '#fefaba', '#f4f6b7', '#cce8b5',
+                    '#ccf0fe', '#d3e2ff', '#d9c8fe', '#efcafe', '#f9d3e0', '#fedbd9', '#ffe3d7', '#feedd3', '#fff1d4', '#fffdde', '#f7fadd', '#e0eed5',
                 ],//色板
-                selectC:-1,//选择的颜色下标
-                userSubscribe:0
+                selectC: -1,//选择的颜色下标
+                subs: 0,
+                userSubscribe: 0,
+                lianImg: '',//链接抠图
             }
         },
-        computed: {
-            userSubscribes(){
-                if(!getToken())return 0;
-                else return userSubscribe().data
-            }
-        },
+        computed: {},
         components: {
             vHeader
         },
@@ -262,24 +257,24 @@
         },
         methods: {
             afterReadBg(file) {//自定义上传背景
-                const bgurl=file.content;
-                let oimg=new Image()
+                const bgurl = file.content;
+                let oimg = new Image()
                 oimg.crossOrigin = '';
-                oimg.onload=()=>{
-                    this.uploadBg=oimg
-                    this.bgIndex=-1
+                oimg.onload = () => {
+                    this.uploadBg = oimg
+                    this.bgIndex = -1
                     this.imgurl = this.initBgimg( this.loadImgObj, oimg );
                 }
-                oimg.src=bgurl
+                oimg.src = bgurl
             },
             changebg(idx) {//背景图片点击
                 if (idx === this.bgIndex) return;
-                this.uploadBg='';
+                this.uploadBg = '';
                 this.bgIndex = idx;
                 let bgimgs = new Image()
                 bgimgs.crossOrigin = '';
                 bgimgs.onload = () => {
-                    this.sec_bg_obj=bgimgs;
+                    this.sec_bg_obj = bgimgs;
                     this.imgurl = this.initBgimg( this.loadImgObj, bgimgs );
                 }
                 bgimgs.src = this.bgList[this.bgType][idx];
@@ -305,25 +300,25 @@
             },
             changeBgType(i) {//点击风景分类
                 if (i === this.bgType) return;
-                this.bgType = i;
-                this.bgIndex = -1;
-                this.$refs.imgs.scrollTo( 0, 0 );
-                this.nowList=[];
-                this.$nextTick(()=>{
-                    this.nowList=this.bgList[this.bgType];
-                })
+                this.bgType = i
+                this.bgIndex = -1
+                this.$refs.imgs.scrollTo( 0, 0 )
+                this.nowList = [];
+                this.$nextTick( () => {
+                    this.nowList = this.bgList[this.bgType];
+                } )
             },
             changeType(idx) {
                 this.colorValue = '';
-                this.bgIndex= -1;
-                this.selectC= -1;
-                if (idx === 2) this.showColorList=true;
+                this.bgIndex = -1;
+                this.selectC = -1;
+                if (idx === 2) this.showColorList = true;
                 if (idx === 5) this.showBg = true;
                 if (this.selectType === idx) return;
                 this.selectType = idx;
                 if (idx === 0) this.imgurl = this.Original;
                 else if (idx === 1) this.imgurl = this.bg_Original;
-                else if (idx === 2) this.showColorList=true;
+                else if (idx === 2) this.showColorList = true;
                 else if (idx === 3) this.SpecialEffects( 1 );
                 else if (idx === 4) this.SpecialEffects( 2 );
                 else this.showBg = true
@@ -339,8 +334,9 @@
                 imgs.onload = () => {
                     EXIF.getData( imgs, function () {
                         _self.imgInfo = EXIF.getTag( this, "Orientation" ) ? EXIF.getTag( this, "Orientation" ) : 1;
+                        console.log( EXIF.getTag( this, "Orientation" ) )
                         param.set( 'orientation', _self.imgInfo );
-                        param.set( 'mattingType', 2 )
+                        param.set( 'mattingType',4 )
                         uploadImgApi( param ).then( res => {
                             if (!res.code) {
                                 _self.fileId = res.data.fileId;
@@ -349,6 +345,7 @@
                                     return
                                 }
                                 _self.imgMsg = res.data
+                                window.localStorage.setItem( 'otherUrl1',JSON.stringify({url:res.data.original,name:file.name}) )
                                 _self.loadImg( res.data )
                             } else {
                                 Toast( {duration: 1500, message: res.msg} )
@@ -369,6 +366,7 @@
                             if (res.data.status === 'success') {
                                 clearInterval( this.timer )
                                 this.imgMsg = res.data
+                                window.localStorage.setItem( 'otherUrl1',JSON.stringify({url:res.data.original,name:'otherUrl1'}) )
                                 this.loadImg( res.data )
                             } else Toast( {
                                 message: `当前人数过多,正在排队等待!当前位置${res.data.queueNumber}`,
@@ -387,8 +385,9 @@
                 let [one, two] = [false, false];
                 this.selectType = 1;
                 this.bg_or_obj = '';
-                this.uploadBg='';
+                this.uploadBg = '';
                 this.choseList[0].url = item.original
+                this.Original = item.original
                 this.bg_Original = item.bgRemovedPreview;
                 this.imgurl = item.bgRemovedPreview;
                 let oImg = new Image();
@@ -398,16 +397,15 @@
                     one = true;
                     if (one && two) {
                         this.afterUp = true;
-                        setShow();
                         this.initTags()
-                        this.$nextTick(()=>{
-                            this.m_top=0
+                        this.$nextTick( () => {
+                            this.m_top = 0
                             this.initSysMsg()
-                        })
+                        } )
                         Toast.clear();
                     }
                 }
-                oImg.src = item.bgRemovedPreview;
+                oImg.src = item.bgRemovedPreview + `?str=${Math.random()}`;
                 let oImg_o = new Image();
                 oImg_o.crossOrigin = '';
                 oImg_o.onload = () => {
@@ -415,24 +413,23 @@
                     two = true;
                     if (one && two) {
                         this.afterUp = true;
-                        setShow();
                         this.initTags()
-                        this.$nextTick(()=>{
-                            this.m_top=0
+                        this.$nextTick( () => {
+                            this.m_top = 0
                             this.initSysMsg()
-                        })
+                        } )
                         Toast.clear();
                     }
                 }
-                oImg_o.src = item.original
+                oImg_o.src = item.original + `?str=${Math.random()}`
                 this.bgIndex = -1
             },
             repeatUp() {
                 document.getElementsByClassName( 'van-uploader__input' )[0].click()
             },
-            changeColor(c,idx) {
+            changeColor(c, idx) {
                 // console.log( e.target.value );
-                this.selectC=idx;
+                this.selectC = idx;
                 this.selectType = 2;
                 this.colorValue = c;
                 this.imgurl = this.initBgcolor( this.loadImgObj, this.colorValue )
@@ -475,8 +472,8 @@
                     this.show = true;
                 } else {
                     Toast.loading( {mask: true, message: '处理中...', duration: 0} );
-                    if(this.bg_or_obj){
-                        this.classUser(this.bg_or_obj)
+                    if (this.bg_or_obj) {
+                        this.classUser( this.bg_or_obj )
                         return
                     }
                     downloadMattedImage( {fileId: this.fileId} ).then( res => {
@@ -484,21 +481,21 @@
                             let oImage = new Image()
                             oImage.crossOrigin = '';
                             oImage.onload = () => {
-                                this.bg_or_obj=oImage
-                                this.classUser(oImage)
+                                this.bg_or_obj = oImage
+                                this.classUser( oImage )
                             }
                             oImage.src = res.data
                         }
                     } )
                 }
             },
-            classUser(oImage){//通用提取
+            classUser(oImage) {//通用提取
                 if (this.selectType === 0) this.images = [this.initBgcolor( this.Original_Obj )];
                 else if (this.selectType === 1) this.images = [this.initBgcolor( oImage )];
                 else if (this.selectType === 2) this.images = [this.initBgcolor( oImage, this.colorValue )];
                 else if (this.selectType === 3) this.images = [this.initSpecialEffects( oImage, this.Original_Obj, 1 )];
                 else if (this.selectType === 4) this.images = [this.initSpecialEffects( oImage, this.Original_Obj, 2 )];
-                else this.images =this.uploadBg ? [this.initBgimg( oImage, this.uploadBg)] : [this.initBgimg( oImage, this.sec_bg_obj)];
+                else this.images = this.uploadBg ? [this.initBgimg( oImage, this.uploadBg )] : [this.initBgimg( oImage, this.sec_bg_obj )];
                 this.show = true;
                 Toast.clear()
             },
@@ -533,24 +530,39 @@
                 }
                 oimg2.src = ori
             },
-            goPay(){//去充值
+            goPay() {//去充值
                 // this.initSysMsg()
-                window.location.href='index.html#/price'
+                window.location.href = 'index.html#/price'
             },
-            initSysMsg(){
-                const ch=document.body.clientHeight || document.documentElement.clientHeight;
-                const cw=document.body.clientWidth || document.documentElement.clientWidth;
-                const img=document.getElementsByClassName('imgsss')[0]
-                const bh=this.$refs.afters.offsetHeight;
-                const hh=document.getElementById('h_header').offsetHeight
-                const xh=ch-bh-hh;
-                const imgH=cw*this.loadImgObj.height/this.loadImgObj.width;
-                if(imgH>xh)img.style.cssText=`height:${xh}px;width:auto;margin:0 auto;`;
+            initSysMsg() {
+                const ch = document.body.clientHeight || document.documentElement.clientHeight;
+                const cw = document.body.clientWidth || document.documentElement.clientWidth;
+                const img = document.getElementsByClassName( 'imgsss' )[0]
+                const bh = this.$refs.afters.offsetHeight;
+                const hh = document.getElementById( 'h_header' ).offsetHeight
+                const xh = ch - bh - hh;
+                const imgH = cw * this.loadImgObj.height / this.loadImgObj.width;
+                if (imgH > xh) img.style.cssText = `height:${xh}px;width:auto;margin:0 auto;`;
                 else {
-                    this.m_top=`${(xh-imgH)/2}px`;
-                    img.style.cssText=`height:auto;width:100%;margin:0 auto;`;
-                };
-                console.log(xh,imgH,bh)
+                    this.m_top = `${(xh - imgH) / 2}px`;
+                    img.style.cssText = `height:auto;width:100%;margin:0 auto;`;
+                }
+                ;
+            },
+            initImgData() {
+                this.lianImg = JSON.parse( window.localStorage.getItem( 'otherUrl1' ) );
+                if( !this.lianImg)return;
+                Toast.loading( {mask: true, message: '处理中...', duration: 0} );
+                let obj = {url: this.lianImg.url, mattingType: 4};
+                copyUpload( obj ).then( res => {
+                    this.fileId = res.data.fileId;
+                    if (res.data.status !== 'success') {
+                        this.pollingImg();
+                        return
+                    }
+                    this.imgMsg = res.data;
+                    this.loadImg( res.data )
+                } )
             },
             copyLink(){
                 Dialog.alert({
@@ -571,12 +583,12 @@
                 });
             }
         },
-        mounted(){
-            if(getToken()){
-                userSubscribe().then(res=>{
-                    this.userSubscribe=res.data
-                })
-            }
+        mounted() {
+            this.initImgData();
+            if(getToken()){ userSubscribe().then( res => {
+                this.userSubscribe = res.data
+            } )}
+
         },
     }
 </script>
@@ -586,9 +598,11 @@
         background-size: cover;
         background-position: center;
     }
-    .main{
+
+    .main {
         justify-content: center;
     }
+
     .afterp_b {
         /*padding-bottom: 3.5rem;*/
     }
@@ -603,8 +617,8 @@
         background-color: #fff;
 
         .van-button {
-            background-color: $to;
-            border-color: $to;
+            background-color: $bea;
+            border-color: $bea;
         }
     }
 
@@ -659,8 +673,8 @@
             }
 
             &.active, .active {
-                border-color: $to;
-                color: $to;
+                border-color: $bea;
+                color: $bea;
             }
         }
 
@@ -670,14 +684,14 @@
             justify-content: space-between;
 
             .van-button {
-                background-color: $to;
+                background-color: $bea;
                 color: #fff;
                 width: 48%;
-                border-color: $to;
+                border-color: $bea;
 
                 &:first-child {
                     background-color: #fff;
-                    color: $to;
+                    color: $bea;
                 }
             }
         }
@@ -724,8 +738,8 @@
         .van-button {
             line-height: .6rem;
             height: .6rem;
-            color: $to;
-            border-color: $to;
+            color: $bea;
+            border-color: $bea;
             font-size: .3rem;
         }
     }
@@ -749,7 +763,7 @@
             .acive {
                 color: #333;
                 font-size: .36rem;
-                border-bottom: 2px solid $to;
+                border-bottom: 2px solid $bea;
             }
         }
 
@@ -769,7 +783,7 @@
                 background-color: #eee;
 
                 &.acive {
-                    border: 1px solid $to;
+                    border: 1px solid $bea;
                 }
 
                 img {
@@ -780,27 +794,31 @@
             }
 
             .bgselect {
-                border: 2px solid $to;
+                border: 2px solid $bea;
             }
         }
 
         .bth {
             text-align: center;
             font-size: .34rem;
-            color: $to;
+            color: $bea;
             line-height: .88rem;
-            .a-i{
+
+            .a-i {
                 justify-content: center;
-                .van-icon{
+
+                .van-icon {
                     margin-right: .15rem;
                 }
             }
         }
     }
-    .showColorList{
-        background-color: #fff;
+
+    .showColorList {
+        background-color: #F6F6F6;
         padding-top: .8rem;
-        span{
+
+        span {
             position: absolute;
             top: .26rem;
             right: 0;
@@ -809,17 +827,21 @@
             padding: 0 .26rem;
             line-height: 1;
         }
-        .color{
+
+        .color {
             flex-wrap: wrap;
             width: 100%;
-            div{
+
+            div {
                 width: 8.33%;
                 height: .52rem;
             }
-            .active{
+
+            .active {
                 box-shadow: 0 0 8px #fff inset;
             }
-            div:first-child{
+
+            div:first-child {
                 margin-bottom: .2rem;
             }
         }

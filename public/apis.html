@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>快速开始 · GitBook</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="">
+    <link rel="icon" href="smallLogo.jpg" type="images/x-icon">
+    <link rel="stylesheet" href="static/public.css">
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style>
+        iframe{
+            width: 100%;
+            flex: 1;
+        }
+        .apis{
+            height: .9rem;
+            width: 100%;
+        }
+        body{
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body class="flex">
+<div class="apis" id="apis"></div>
+<iframe src="http://m.picup.shop/apidoc/_book/index.html?v=2" frameborder="0">
+</iframe>
+<script>
+    window.onload=function(){
+        const oImgBtn=document.querySelector('.imgBtn')
+        oImgBtn.addEventListener('click',function(e){
+            e.stopPropagation()
+            const oD=document.getElementsByClassName('pages')[0],oH=document.querySelector('.h_header')
+            console.log(oD.style.right)
+            if(!oD.style.right || oD.style.right==='-100%')oD.style.right='0';
+            else oD.style.right='-100%';
+        })
+        document.body.addEventListener('click',function(){
+            const oD=document.getElementsByClassName('pages')[0]
+            oD.style.right='-100%'
+        })
+    }
+</script>
+</body>
+</html>
+

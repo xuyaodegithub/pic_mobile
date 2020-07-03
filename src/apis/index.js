@@ -7,6 +7,10 @@ import https from './request'
  **/
 export const uploadImgApi=(data)=>  https.upPost('/webMatting/matting2',data);
 /**
+ * 链接抠图
+ **/
+export const copyUpload=(data)=> https.paramspost('/webMatting/mattingByUrl2',data)
+/**
  * 获取活动人数
  **/
 export const activePeople=(data)=>https.get('/imageCompose/serverInfo',data);
@@ -49,7 +53,8 @@ export const getUserInfo=(data)=>https.get('/user/userInfo',data)
 /**
  * 获取订阅列表
  **/
-export const subscriptionPlans=(data)=>https.get('/order/subscriptionPlans',data)
+// export const subscriptionPlans=(data)=>https.get('/order/subscriptionPlans',data)
+export const subscriptionPlans=(data)=>https.get('/pay/findProductAll',data)
 /**
  *我的订阅
  **/
@@ -84,3 +89,15 @@ export const userRegister=(data)=>https.get('/user/registerByMobile',data)
 export const userGetInvitation=(data)=>{
     return https.get('/user/getInvitation',data)
 }
+/**
+ *下单接口
+ **/
+export const userCreatePayment=(data)=> https.get('/pay/unifiedOrder',data)
+/**
+ * 上传背景保存
+ **/
+export const uploadossBg=(data)=> https.upPost('/oss/upload',data)
+/**
+ *图片修复
+ **/
+export const redirMatting=(data)=> https.upPost('/webMatting/predict',data)

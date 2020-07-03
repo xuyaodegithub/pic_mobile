@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push( {
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        } );
+        var f = d.getElementsByTagName( s )[0],
+            j = d.createElement( s ), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore( j, f );
+    })( window, document, 'script', 'dataLayer', 'GTM-WG4BQ8P' );
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--//设置不缓存-->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Cache" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <!-- 忽略浏览器自动识别数字为电话号码 -->
+    <meta content="telephone=no" name="format-detection">
+    <!-- 忽略浏览器自动识别邮箱账号 -->
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" id="view">
+    <meta name="applicable-device" content="pc">
+    <meta name="Description" content="PicUP.Ai提供的智能图像修复，可以用于图片去水印、老照片翻新、人像去除皱纹和雀斑、去掉照片里面不需要的人物和物体，毫无瑕疵">
+    <meta name="Keywords" content="去水印,老照片翻新,老照片修复,加水印,图片去水印,照片修复"/>
+    <!--  <title>AI智能抠图</title>-->
+    <title>智能图像修复老照片翻新-PicUP.AI</title>
+    <link rel="stylesheet" href="static/public.css">
+    <link rel="icon" href="smallLogo.jpg" type="images/x-icon">
+    <!--标题栏：-->
+    <!--<link rel="icon" href="static/ball.png" type="image/x-icon">-->
+    <!--收藏夹：-->
+    <!--<link rel="shortcut icon" href="static/ball.png" type="image/x-icon">-->
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement( "script" );
+            hm.src = "https://hm.baidu.com/hm.js?156c05f7319464c49127c703f9ed21df";
+            var s = document.getElementsByTagName( "script" )[0];
+            s.parentNode.insertBefore( hm, s );
+        })();
+    </script>
+</head>
+<body>
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WG4BQ8P"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<div id="headCutout"></div>
+<script>
+    (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                if (clientWidth >= 750) {
+                    docEl.style.fontSize = '100px';
+                } else {
+                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+                }
+            };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+    window.onload=function(){
+        const oImgBtn=document.querySelector('.imgBtn')
+        oImgBtn.addEventListener('click',function(e){
+            e.stopPropagation()
+            const oD=document.getElementsByClassName('pages')[0],oH=document.querySelector('.h_header')
+            console.log(oD.style.right)
+            if(!oD.style.right || oD.style.right==='-100%')oD.style.right='0';
+            else oD.style.right='-100%';
+        })
+        document.body.addEventListener('click',function(){
+            const oD=document.getElementsByClassName('pages')[0]
+            oD.style.right='-100%'
+        })
+    }
+</script>
+</body>
+</html>

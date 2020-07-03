@@ -8,7 +8,7 @@ Object.keys(filters).map((val,index)=>{
 })
 
 
-import { Uploader,Button,ImagePreview,Cell, CellGroup,Icon,Toast,Popup,Tab,Tabs,Field,RadioGroup, Radio,Dialog  } from 'vant';
+import { Uploader,Button,ImagePreview,Cell, CellGroup,Icon,Toast,Popup,Tab,Tabs,Field,RadioGroup, Radio,Dialog,Slider   } from 'vant';
 Vue.component(Uploader.name,Uploader)
 Vue.component(Button.name,Button)
 Vue.component(Cell.name,Cell)
@@ -21,10 +21,9 @@ Vue.component(Field.name,Field)
 Vue.component(RadioGroup.name,RadioGroup)
 Vue.component(Radio.name,Radio)
 Vue.component(Dialog.name,Dialog)
+Vue.component(Slider.name,Slider)
 Vue.use(ImagePreview)
 Vue.use(Toast)
-
-
 
 
 Vue.directive('drag',(event)=>{
