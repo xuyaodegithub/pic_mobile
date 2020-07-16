@@ -54,7 +54,7 @@ export const getUserInfo=(data)=>https.get('/user/userInfo',data)
  * 获取订阅列表
  **/
 // export const subscriptionPlans=(data)=>https.get('/order/subscriptionPlans',data)
-export const subscriptionPlans=(data)=>https.get('/pay/findProductAll',data)
+export const subscriptionPlans=(data)=>https.get('/pay/findProductAllByType',data)
 /**
  *我的订阅
  **/

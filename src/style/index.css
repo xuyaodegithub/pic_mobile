@@ -55,6 +55,9 @@
 .price .van-radio{
     padding: 0 .42rem;
 }
+.price .month .van-radio{
+    padding-right: 0;
+}
 .price .van-radio.active{
-    background-color:rgb(255,246,249) ;
+    /*background-color:rgb(255,246,249) ;*/
 }
