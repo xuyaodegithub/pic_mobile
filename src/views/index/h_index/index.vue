@@ -6,24 +6,52 @@
                    :multiple="false">
             <div class="names">功能</div>
             <div class="flex a-i f-w">
+                <div @click="toWeb(7)">
+                    <div class="decs">
+                        <h2>通用抠图</h2>
+                        <p>人像宠物商品卡通</p>
+                    </div>
+                    <img src="http://deeplor.oss-cn-hangzhou.aliyuncs.com/upload/image/20200817/e1a76e075e0944e783d8aee11745fb5f.jpg"/>
+                    <img src="@/assets/images/tygif.gif" alt="">
+                </div>
                 <div @click="toWeb(0)">
-                    <img src="@/assets/images/h_01.png"/>
+                    <div class="decs">
+                        <h2>人像抠图 </h2>
+                        <p>证件照、形象照</p>
+                    </div>
+                    <img src="http://deeplor.oss-cn-hangzhou.aliyuncs.com/upload/image/20200817/4481c3cf00534f55a22651449a0e8d32.jpg"/>
                     <img src="@/assets/images/pgif.gif" alt="">
                 </div>
                 <div @click="toWeb(1)">
-                    <img src="@/assets/images/h_02.png"/>
+                    <div class="decs">
+                        <h2>物体抠图</h2>
+                        <p>电商白底图</p>
+                    </div>
+                    <img src="http://deeplor.oss-cn-hangzhou.aliyuncs.com/upload/image/20200817/737bdebc7fa643e7aff014f2e6f7beae.jpg"/>
                     <img src="@/assets/images/ogif.gif" alt="">
                 </div>
                 <div @click="toWeb(2)">
-                    <img src="@/assets/images/h_03.png"/>
+                    <div class="decs">
+                        <h2>头像抠图</h2>
+                        <p>个性化定制</p>
+                    </div>
+                    <img src="http://deeplor.oss-cn-hangzhou.aliyuncs.com/upload/image/20200817/799eaacbfd2549cb9d3417c55974566a.jpg"/>
                     <img src="@/assets/images/headcount.gif" alt="">
                 </div>
                 <div @click="toWeb(3)">
-                    <img src="@/assets/images/h_04.png"/>
+                    <div class="decs">
+                        <h2>一键美化</h2>
+                        <p>局部曝光自动调</p>
+                    </div>
+                    <img src="http://deeplor.oss-cn-hangzhou.aliyuncs.com/upload/image/20200817/8515334b0fb849c08b9805af2aefe797.jpg"/>
                     <img src="@/assets/images/beauty.gif" alt="">
                 </div>
                 <div @click="toWeb(4)">
-                    <img src="@/assets/images/h_05.png"/>
+                    <div class="decs">
+                        <h2>智能修复</h2>
+                        <p>去水印、修照片</p>
+                    </div>
+                    <img src="http://deeplor.oss-cn-hangzhou.aliyuncs.com/upload/image/20200817/012d6aee5e6f4feeb6fb6d19ba68389f.jpg"/>
                     <img src="@/assets/images/fix.gif" alt="">
                 </div>
 
@@ -92,8 +120,8 @@
         },
         methods: {
             toWeb(i) {
-                const urlList = ['people.html', 'object.html', 'headCutout.html', 'beautify.html', 'repairImg.html', 'guo.html', 'travle.html'];
-                if ([2, 3, 4].includes( i )) {
+                const urlList = ['people.html', 'object.html', 'headCutout.html', 'beautify.html', 'repairImg.html', 'guo.html', 'travle.html', 'currency.html'];
+                if ([2, 3, 4, 7].includes( i )) {
                     this.url = urlList[i]
                     this.$refs.files.click()
                 } else window.location.href = urlList[i]
@@ -110,7 +138,7 @@
             upImg(e) {
                 Toast.loading()
                 let [file, fromData] = [e.target.files[0], new FormData()];
-                const idx = ['headCutout.html', 'beautify.html', 'repairImg.html'].indexOf( this.url );
+                const idx = ['headCutout.html', 'beautify.html', 'repairImg.html','currency.html'].indexOf( this.url );
                 if (idx === 2) {
                     compressImg( file ).then( blob => {
                         fromData.set( 'file', blob )
@@ -156,7 +184,22 @@
         & > .f-w > div {
             position: relative;
             margin-bottom: .2rem;
-
+            .decs{
+                position: absolute;
+                left:0.2rem ;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #fff;
+                h2{
+                    font-size: .36rem;
+                    line-height: 1;
+                    margin-bottom: .2rem;
+                }
+                p{
+                    font-size: .24rem;
+                    color: rgba(255,255,255,.8);
+                }
+            }
             img:last-child {
                 position: absolute;
                 width: .88rem;
@@ -165,6 +208,7 @@
                 right: .2rem;
                 transform: translateY(-50%);
                 margin: 0;
+                border-radius: .15rem;
             }
         }
 

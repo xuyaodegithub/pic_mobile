@@ -118,7 +118,7 @@
                     this.upCansTxt.clearRect( 0, 0, this.upCans.width, this.upCans.height );
                     this.cansTxt.drawImage( oImg, 0, 0, );
                 }
-                oImg.src = this.bg_Original + `?str=${Math.random()}`;
+                oImg.src = this.addUrlQuery(this.bg_Original);
             },
             back(k) {
                 const idx = this.historyList.indexOf( this.bg_Original );
@@ -304,7 +304,7 @@
                         this.oContent=document.querySelector( `.mainimg` ).getBoundingClientRect();
                     })
                 };
-                oImg.src = this.Original.url + `?id=${Math.random()}`;
+                oImg.src = this.addUrlQuery(this.Original.url);
             },
             initImgData() {//初始化参数
                 [this.cans, this.upCans, this.hiddenCans] = [document.getElementById( 'cans' ), document.getElementById( 'upCans' ), document.createElement( 'canvas' )];

@@ -4,7 +4,11 @@
             <div class="flex num a-i">
                 <div>
                     <p>下载高清大图</p>
-                    <p>剩余次数：{{userSub.freeRemaining}}</p>
+                    <p class="items"  v-if="userSub.monthExpireDate && userSub.monthExpireDate>noeTime"><!--Free remaining-->包月剩余次数：{{userSub.monthRemaining}} <!--points--></p>
+                    <p  v-if="userSub.monthExpireDate && userSub.monthExpireDate>noeTime">{{userSub.monthStartDate | changeTime}} 到 {{userSub.monthExpireDate | changeTime}}</p>
+                    <p class="items"><!--Free remaining-->永久剩余次数：{{userSub.freeRemaining}} <!--points--></p>
+<!--                    <p>包月剩余次数：{{userSub.freeRemaining}}</p>-->
+<!--                    <p>剩余永久次数：{{userSub.freeRemaining}}</p>-->
                 </div>
                 <van-button round @click="$router.push('/price')">去充值</van-button>
             </div>
@@ -15,7 +19,7 @@
             </div>
             <div class="apiset">
                 <p>邀请好友，获取免费次数</p>
-                <p>邀请好友注册，你和好友都获赠20次大图</p>
+                <p>邀请好友注册，你和好友都获赠5次大图</p>
                 <p>将下面邀请码复制给好友，分享越多，获得次数越多</p>
                 <p class="flex a-i" @click="copyyqma">邀请码：{{yqma}}</p>
             </div>
@@ -52,7 +56,10 @@
         computed:{
             ...mapGetters([
                 'userInfos'
-            ])
+            ]),
+            noeTime(){
+                return new Date().getTime()
+            }
         },
         mounted(){
             this.getApi()
@@ -115,7 +122,7 @@
 
             },
             goapi(){
-                window.location.href='docsify/#/apis.md'
+                window.location.href='apis.html'
             }
         }
     }
@@ -131,15 +138,15 @@
         background-color: #fff;
         margin-bottom: .2rem;
         p:first-child{font-weight: 600}
-        p:last-child{
+        p:first-child ~ p{
             font-size: .3rem;
             color: #989898;
             margin-top: .25rem;
         }
-        p:nth-child(3){
-            color: #989898;
-            line-height: .48rem;
-        }
+        /*p:nth-child(3){*/
+        /*    color: #989898;*/
+        /*    line-height: .48rem;*/
+        /*}*/
         .van-button{
             color: #fff;
             background-color: $theme;

@@ -55,8 +55,10 @@
             </div>
             <div class="flex a-i weibo" @click="copyLink"><img src="@/assets/images/weibo.png" alt="">微博进入用户注意</div>
             <div class="num">
-                当前可用次数：<i>{{userSubscribe ? userSubscribe.freeRemaining +
-                userSubscribe.monthRemaining : 0}}</i> <span @click="goPay">去充值</span>
+                {{(userSubscribe.monthExpireDate && userSubscribe.monthExpireDate>noeTime &&
+                userSubscribe.monthRemaining>0) ? `包月剩余次数:${userSubscribe.monthRemaining}` :
+                `永久剩余次数:${userSubscribe.freeRemaining >0 ? userSubscribe.freeRemaining : 0 }`}}
+                <span @click="goPay">去充值</span>
             </div>
         </van-popup>
         <van-popup v-model="showBg" position="bottom" closeable :overlay="false" class="showBgP">
@@ -410,7 +412,7 @@
                         Toast.clear();
                     }
                 }
-                oImg.src = item.bgRemovedPreview + `?str=${Math.random()}`;
+                oImg.src = this.addUrlQuery(item.bgRemovedPreview);
                 let oImg_o = new Image();
                 oImg_o.crossOrigin = '';
                 oImg_o.onload = () => {
@@ -426,7 +428,7 @@
                         Toast.clear();
                     }
                 }
-                oImg_o.src = item.original + `?str=${Math.random()}`
+                oImg_o.src = this.addUrlQuery(item.original);
                 this.bgIndex = -1
             },
             repeatUp() {
@@ -463,7 +465,7 @@
                 let imgData = ctx.getImageData( 0, 0, can.width, can.height );
                 let newBg1 = imgData;
                 let newBg4 = ctx.getImageData( 0, 0, can.width, can.height );
-                JSManipulate.blur.filter( newBg1, {amount: 5.0} );
+                JSManipulate.blur.filter( newBg1, {amount:5*bg.width/this.loadImgObj.width} );
                 JSManipulate.grayscale.filter( newBg4 );
                 ctx.clearRect( 0, 0, can.width, can.height )
                 if (k === 1) ctx.putImageData( newBg4, 0, 0 );

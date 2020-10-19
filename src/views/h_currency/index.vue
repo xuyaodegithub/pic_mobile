@@ -7,23 +7,28 @@
                 <img :src="imgurl" alt="" class="imgsss">
             </div>
         </div>
-        <div class="btn" v-show="!afterUp">
+        <div class="btn" v-show="!afterUp" style="margin-top: 1.5rem">
             <van-uploader :after-read="afterRead" :max-count="1">
-                <van-button round type="info" block icon="photo-o">上传图片</van-button>
+                <van-button round type="info" block icon="photo-o" ref="upfile">上传图片</van-button>
             </van-uploader>
         </div>
         <div class="afterUp" v-show="afterUp" ref="afters">
-<!--            <div class="flex tags a-i">-->
-<!--                <div v-for="(item,idx) in choseList" :key="idx"-->
-<!--                     :class="{active : selectType===idx}">-->
-<!--                    <div @click="changeType(idx)">-->
-<!--                        <img :src="item.url" :class="{active : selectType===idx}" alt="" v-if="![0,3,4].includes(idx)">-->
-<!--                        <i v-else :class="{active : selectType===idx}"-->
-<!--                           :style="{backgroundImage: `url(${item.url})`}"></i>-->
-<!--                        <span>{{item.title}}</span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="flex tags a-i">
+                <div v-for="(item,idx) in choseList" :key="idx"
+                     :class="{active : selectType===idx}">
+                    <div @click="changeType(idx)">
+                        <img :src="item.url" :class="{active : selectType===idx}" alt="" v-if="![0,3,4].includes(idx)">
+                        <i v-else :class="{active : selectType===idx}"
+                           :style="{backgroundImage: `url(${item.url})`}"></i>
+                        <span>{{item.title}}</span>
+                    </div>
+                    <!--                    <div v-else class="pos">-->
+                    <!--                        <img :src="item.url" :class="{active : selectType===idx}" alt="" class="te">-->
+                    <!--                        <input type="color" id="color" @change="changeColor" style="opacity: 0">-->
+                    <!--                        <span>背景颜色</span>-->
+                    <!--                    </div>-->
+                </div>
+            </div>
             <div class="btn flex">
                 <van-button round @click="repeatUp">重新上传</van-button>
                 <van-button round icon="icon iconfont icon-xiazai" @click="showPopup=!showPopup">保存图片</van-button>
@@ -53,7 +58,7 @@
                 {{(userSubscribe.monthExpireDate && userSubscribe.monthExpireDate>noeTime &&
                 userSubscribe.monthRemaining>0) ? `包月剩余次数:${userSubscribe.monthRemaining}` :
                 `永久剩余次数:${userSubscribe.freeRemaining >0 ? userSubscribe.freeRemaining : 0 }`}}
-                  <span @click="goPay">去充值</span>
+                <span @click="goPay">去充值</span>
             </div>
         </van-popup>
         <van-popup v-model="showBg" position="bottom" closeable :overlay="false" class="showBgP">
@@ -87,7 +92,7 @@
 </template>
 
 <script>
-    import {uploadImgApi, getMattingInfo, downloadMattedImage, userSubscribe,copyUpload} from '@/apis'
+    import {uploadImgApi, getMattingInfo, downloadMattedImage, userSubscribe, copyUpload} from '@/apis'
     import {getToken, setToken, removeToken} from "../../utils/auth";
     import {mapGetters, mapActions} from 'vuex'
     import JSManipulate from '../../utils/jsmanipulate.js'
@@ -172,7 +177,7 @@
     import bgz29 from '@/assets/bgs3/29.jpg'
     import bgz30 from '@/assets/bgs3/30.jpg'
     import vHeader from '@/components/h_header'
-    // import people from '@/assets/images/init_people.jpg'
+    // import people from '@/assets/images/headcount.gif'
     import {EXIF} from 'exif-js'
     import {Toast, Dialog} from 'vant'
     import op from '@/assets/images/opacity.jpg'
@@ -188,7 +193,7 @@
                 show: false,
                 showPopup: false,
                 showBg: false,
-                imgurl: 'http://deeplor.oss-cn-hangzhou.aliyuncs.com/matting_preview/2020/06/17/8cc5a26506874f02aba307d2f5481abf.png',
+                imgurl: 'http://deeplor.oss-cn-hangzhou.aliyuncs.com/upload/image/20200722/65d8ce1c243d4206baedd3a99489fa54.png',
                 imgInfo: 1,
                 Original: b_4,//原图链接
                 Original_Obj: '',//原图加载后对象
@@ -326,7 +331,7 @@
                 else this.showBg = true
             },
             afterRead(file) {
-                Toast.loading( {mask: true, message: '上传中...', duration: 0} );
+                Toast.loading( {mask: true, message: '处理中...', duration: 0} );
                 let param = new FormData(), _self = this;
                 // console.log( file, file.file, file.name );
                 param.append( 'file', file.file, file.name );
@@ -338,7 +343,7 @@
                         _self.imgInfo = EXIF.getTag( this, "Orientation" ) ? EXIF.getTag( this, "Orientation" ) : 1;
                         console.log( EXIF.getTag( this, "Orientation" ) )
                         param.set( 'orientation', _self.imgInfo );
-                        param.set( 'mattingType',4 )
+                        param.set( 'mattingType', 6 )
                         uploadImgApi( param ).then( res => {
                             if (!res.code) {
                                 _self.fileId = res.data.fileId;
@@ -347,7 +352,7 @@
                                     return
                                 }
                                 _self.imgMsg = res.data
-                                window.localStorage.setItem( 'otherUrl1',JSON.stringify({url:res.data.original,name:file.name}) )
+                                window.localStorage.setItem( 'otherUrl0',JSON.stringify({url:res.data.original,name:file.name}) )
                                 _self.loadImg( res.data )
                             } else {
                                 Toast( {duration: 1500, message: res.msg} )
@@ -368,7 +373,7 @@
                             if (res.data.status === 'success') {
                                 clearInterval( this.timer )
                                 this.imgMsg = res.data
-                                window.localStorage.setItem( 'otherUrl1',JSON.stringify({url:res.data.original,name:'otherUrl1'}) )
+                                window.localStorage.setItem( 'otherUrl0',JSON.stringify({url:res.data.original,name:'otherUrl0'}) )
                                 this.loadImg( res.data )
                             } else Toast( {
                                 message: `当前人数过多,正在排队等待!当前位置${res.data.queueNumber}`,
@@ -552,10 +557,10 @@
                 ;
             },
             initImgData() {
-                this.lianImg = JSON.parse( window.localStorage.getItem( 'otherUrl1' ) );
+                this.lianImg = JSON.parse( window.localStorage.getItem( 'otherUrl3' ) );
                 if( !this.lianImg)return;
                 Toast.loading( {mask: true, message: '处理中...', duration: 0} );
-                let obj = {url: this.lianImg.url, mattingType: 4};
+                let obj = {url: this.lianImg.url, mattingType: 6};
                 copyUpload( obj ).then( res => {
                     this.fileId = res.data.fileId;
                     if (res.data.status !== 'success') {
@@ -587,10 +592,11 @@
         },
         mounted() {
             this.initImgData();
-            if(getToken()){ userSubscribe().then( res => {
-                this.userSubscribe = res.data
-            } )}
-
+            if(getToken()){
+                userSubscribe().then( res => {
+                    this.userSubscribe = res.data
+                } )
+            }
         },
     }
 </script>
@@ -619,8 +625,8 @@
         background-color: #fff;
 
         .van-button {
-            background-color: $bea;
-            border-color: $bea;
+            background-color: #ed1e56;
+            border-color: #ed1e56;
         }
     }
 
@@ -675,8 +681,8 @@
             }
 
             &.active, .active {
-                border-color: $bea;
-                color: $bea;
+                border-color: #ed1e56;
+                color: #ed1e56;
             }
         }
 
@@ -686,14 +692,14 @@
             justify-content: space-between;
 
             .van-button {
-                background-color: $bea;
+                background-color: #ed1e56;
                 color: #fff;
                 width: 48%;
-                border-color: $bea;
+                border-color: #ed1e56;
 
                 &:first-child {
                     background-color: #fff;
-                    color: $bea;
+                    color: #ed1e56;
                 }
             }
         }
@@ -740,8 +746,8 @@
         .van-button {
             line-height: .6rem;
             height: .6rem;
-            color: $bea;
-            border-color: $bea;
+            color: #ed1e56;
+            border-color: #ed1e56;
             font-size: .3rem;
         }
     }
@@ -765,7 +771,7 @@
             .acive {
                 color: #333;
                 font-size: .36rem;
-                border-bottom: 2px solid $bea;
+                border-bottom: 2px solid #ed1e56;
             }
         }
 
@@ -785,7 +791,7 @@
                 background-color: #eee;
 
                 &.acive {
-                    border: 1px solid $bea;
+                    border: 1px solid #ed1e56;
                 }
 
                 img {
@@ -796,14 +802,14 @@
             }
 
             .bgselect {
-                border: 2px solid $bea;
+                border: 2px solid #ed1e56;
             }
         }
 
         .bth {
             text-align: center;
             font-size: .34rem;
-            color: $bea;
+            color: #ed1e56;
             line-height: .88rem;
 
             .a-i {

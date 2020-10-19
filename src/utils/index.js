@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 export const toRouter=(url)=>{
     let urls = window.location.href.split('#/')[0]
     let urlss = urls.substring(0,urls.lastIndexOf('/'))
@@ -216,6 +217,7 @@ export const compressImg = (files, k) => {
         let canTxt = can.getContext( '2d' );
         if (!k) {
             reader.readAsDataURL( files );
+            // console.log(URL.createObjectURL(files),222222)
             reader.onloadend = (e) => {
                 let oImg = new Image();
                 oImg.crossOrigin = '';
@@ -227,7 +229,7 @@ export const compressImg = (files, k) => {
                         resolve( blob,'image/jpeg', )
                     } )
                 };
-                oImg.src = reader.result;
+                oImg.src = reader.result;//URL.createObjectURL(files) 这个也可以获取本地文件的临时路径，是同步的
             }
             reader.onerror = (err) => {
                 reject( err )
@@ -243,10 +245,24 @@ export const compressImg = (files, k) => {
                     resolve( blob )
                 } )
             };
-            oImg.src = files + `?id=${Math.random()}`;
+            oImg.src = this.addUrlQuery(files);
             oImg.onerror = (err) => {
                 reject( err )
             }
         }
     } )
+}
+export const  setVsource=()=>{
+    var seaCats=queryStringUrl('vsource');
+    if(!seaCats && document.referrer.includes('picup')) return;
+    if(seaCats)Cookies.set('vsource',seaCats,{ expires: 7 });
+    else if(document.referrer && !seaCats)Cookies.set('vsource',document.referrer,{ expires: 7 });
+}
+export const queryStringUrl=(name)=>{
+    var reg=new RegExp("(^|$)"+name+"=([^&]*)(&|$)")
+    var r=window.location.search.substr(1).match(reg)
+    if(r!=null){
+        return decodeURI(r[2])
+    }
+    return null
 }

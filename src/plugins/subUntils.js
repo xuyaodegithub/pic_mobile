@@ -1,13 +1,23 @@
 import Vue from 'vue'
+import { BrowserInfo } from '@/utils'
 import '../style/public.css';
 import filters from '../filters/filters'
 import wechat from 'weixin-js-sdk'
+import Cookies from 'js-cookie'
 Vue.prototype.$wechat=wechat
 Object.keys(filters).map((val,index)=>{
     Vue.filter(val,filters[val])
 })
-
-
+if(BrowserInfo.isWeixin){
+    if(!Cookies.get('token')){
+        window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx695bf5a85133ef4c&redirect_uri=http://m.picup.shop/weixinMp/oauth2Callback&state=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_base`
+    }
+}
+Vue.prototype.addUrlQuery=(url)=>{
+    var reg = /^\s*data:([a-z]+\/[a-z0-9-+.]+(;[a-z-]+=[a-z0-9-]+)?)?(;base64)?,([a-z0-9!$&',()*+;=\-._~:@\/?%\s]*?)\s*$/i;
+    if(reg.test(url))return url;
+    else return url+ (url.indexOf('?')>-1 ? '&' : '?') +'id='+Math.random();
+}
 import { Uploader,Button,ImagePreview,Cell, CellGroup,Icon,Toast,Popup,Tab,Tabs,Field,RadioGroup, Radio,Dialog,Slider   } from 'vant';
 Vue.component(Uploader.name,Uploader)
 Vue.component(Button.name,Button)

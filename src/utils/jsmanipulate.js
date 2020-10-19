@@ -934,13 +934,13 @@ function GrayscaleFilter(){
 	};
 	this.valueRanges = {
 	};
-	this.filter = function(input,values){
+	this.filter = function(input,values={a:0.3,b:0.59,c:0.11}){
 		var width = input.width, height = input.height;
 		var inputData = input.data;
 		for (var y = 0; y < height; y++) {
 			for (var x = 0; x < width; x++) {
 				var pixel = (y*width + x)*4;
-				var luma = inputData[pixel]*0.3 + inputData[pixel+1]*0.59 + inputData[pixel+2]*0.11;
+				var luma = inputData[pixel]*values.a + inputData[pixel+1]*values.b + inputData[pixel+2]*values.c;
 				inputData[pixel] = inputData[pixel+1] = inputData[pixel+2] = luma;
 			}
 		}

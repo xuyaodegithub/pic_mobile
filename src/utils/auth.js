@@ -1,6 +1,6 @@
 const imgId='img_info'
 const imgId2='img_info2'
-const TokenKey = 'Admin-Token'
+const TokenKey = 'token'
 import Cookies from 'js-cookie'
 export const getFiled=(k)=>{
   const str=k ? imgId2 : imgId
@@ -20,7 +20,7 @@ export function getToken() {
 
 export function setToken(token) {
   // var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);//设置小于一天的时间
-  Cookies.set(TokenKey, token);
+  Cookies.set(TokenKey, token,{ domain: '.picup.shop' });
   // let str=JSON.stringify(token)
   // return localStorage.setItem(TokenKey, token)//存储是按照字符串存着，取出来后需要JSON.parse
 }

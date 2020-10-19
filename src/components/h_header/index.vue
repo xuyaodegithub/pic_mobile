@@ -15,12 +15,14 @@
 
 <script>
 	import { getToken,removeToken } from '@/utils/auth'
+	import { setVsource } from '@/utils'
     export default {
         data() {
             return {
                 msg: '',
 				pageList:[
 					{url:'index.html',title:'首页'},
+					{url:'currency.html',title:'通用抠图'},
 					{url:'people.html',title:'人像抠图'},
 					{url:'object.html',title:'物体抠图'},
 					{url:'headCutout.html',title:'头像抠图'},
@@ -54,6 +56,9 @@
         	// document.addEventListener('click',()=>{
         	// 	this.show=false
 			// })
+		},
+		mounted(){
+			setVsource()
 		},
         destroyed() {
             // window.removeEventListener('click',()=>{

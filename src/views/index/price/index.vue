@@ -34,7 +34,7 @@
             <van-radio-group v-model="radio2" checked-color="#ed1e56" @change="change">
                 <van-radio :name="item.val" v-for="(item,idx) in monthList" :key="idx"
                            :class="{active : radio2===item.val}">
-                    <div>
+                    <div v-if="seleceItem">
                         {{item.title}}  <span style="color: #ed1e56;" v-if="item.val===1">￥{{seleceItem.price}}</span>
                         <span style="color: #ed1e56;" v-if="item.val===12">￥{{parseFloat(seleceItem.price*12*0.9).toFixed(1)}} <i style="font-size: 0.24rem">({{`月费￥${seleceItem.price} X 12个月 X 0.9折`}})</i></span>
                     </div>
@@ -56,8 +56,10 @@
 <script>
     import vHeader from '@/components/h_header'
     import {subscriptionPlans, userCreatePayment} from '@/apis'
+    import {wxJssdkData} from '@/apis/wxJssdk.js'
     import {Toast} from 'vant';
-
+    import { BrowserInfo } from '@/utils'
+    import Cookies from 'js-cookie'
     export default {
         name: "index",
         data() {
@@ -72,7 +74,8 @@
         },
         computed: {
             priceList() {
-                return this.type ? this.planList2 : this.planList;
+                const arr= this.type ? this.planList2 : this.planList;
+                return arr.length>0 ? arr : []
             },
             seleceItem() {
                 return this.priceList.find( v => v.id === this.radio )
@@ -124,19 +127,50 @@
                 let data = {
                     productId: this.radio,
                     h5: 1,
-                }
+                },that=this;
                 if (!this.type) data['num'] = this.radio2;
+                if(BrowserInfo.isWeixin)data['h5'] = 2;
                 userCreatePayment( data ).then( res => {
-                    window.location.href = res.data.codeURL + `&redirect_url=${encodeURIComponent( 'http://m.picup.shop/index.html#/count' )}`
+                    if(BrowserInfo.isWeixin){
+                        let result=res.data;
+                        result['package']=result.packageValue;
+                        delete result.packageValue;
+                        console.log(result);
+                        WeixinJSBridge.invoke(
+                            'getBrandWCPayRequest',
+                            result,
+                            function (reson) {
+                                // WeixinJSBridge.log( res.err_msg );
+                                if(reson.err_msg == "get_brand_wcpay_request:ok" ){//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                                    that.$router.replace('/count')
+                                }
+                                // alert( res.err_code + res.err_desc + res.err_msg );
+                            }
+                        )
+                    }else  window.location.href = res.data.codeURL + `&redirect_url=${encodeURIComponent( 'http://m.picup.shop/index.html#/count' )}`
+
                 } ).finally( () => {
                     Toast.clear()
                 } )
             }
         },
         mounted() {
-            console.log( encodeURI( 'http://m.picup.shop/index.html#/count' ) )
-
+            console.log(Cookies.get('openid'),BrowserInfo.isWeixin,`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx695bf5a85133ef4c&redirect_uri=http://m.picup.shop/weixinMp/oauth2Callback&state=${encodeURIComponent('http://m.picup.shop/#/price')}&response_type=code&scope=snsapi_base`);
+            if(BrowserInfo.isWeixin){
+                if(!Cookies.get('openid')){
+                    window.location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx695bf5a85133ef4c&redirect_uri=http://m.picup.shop/weixinMp/oauth2Callback&state=${encodeURIComponent('http://m.picup.shop/#/price')}&response_type=code&scope=snsapi_base`
+                }
+            }
             this.initPlanList()
+        },
+        created() {
+            const data = {
+                title: '一键人像抠图———在线换背景',
+                desc: '不必专业PS，新手小白都会用',
+                link: window.location.href,
+                imgUrl: 'http://guoqing.deeplor.com/img/share_p.jpg'
+            };
+            wxJssdkData( this, data );
         }
     }
 </script>

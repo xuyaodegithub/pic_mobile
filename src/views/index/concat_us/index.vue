@@ -8,7 +8,7 @@
         <div class="wechat">
             <h6>微信联系</h6>
             <p @touchstart.prevent="longtab" @touchend.prevent="endtab" @touchmove.prevent="movetab">roymind</p>
-            <img src="../../../assets/ewm.jpg" alt="">
+            <img src="../../../assets/images/wxl.png" alt="">
         </div>
     </div>
 </template>
@@ -33,7 +33,7 @@
             },
             endtab(){
                 if(!this.startT)return;
-                const time=(new Date()-this.startT)/1000
+                const time=(new Date()-this.startT)/1000;
                 if(time>0.8){
                     let oInput = document.createElement('input');
                     oInput.value = 'roymind';
@@ -42,7 +42,7 @@
                     document.execCommand("Copy"); // 执行浏览器复制命令
                     oInput.className = 'oInput';
                     oInput.style.display='none';
-                    oInput.blur()
+                    oInput.blur();
                     Toast('复制成功')
 
                 }

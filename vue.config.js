@@ -47,7 +47,14 @@ module.exports = {
             // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
             title: '一键抠图神器',
             // chunks: ['chunk-vendors', 'chunk-common', 'index']
-        }, people: {
+        }, currency: {
+            entry: 'src/views/h_currency/index.js',
+            template: 'public/currency.html',
+            filename: 'currency.html',
+            // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
+            title: '通用抠图',
+            // chunks: ['chunk-vendors', 'chunk-common', 'index']
+        },people: {
             entry: 'src/views/h_people/index.js',
             template: 'public/people.html',
             filename: 'people.html',
