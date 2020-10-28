@@ -7,7 +7,7 @@
             <div class="flex a-i titles">
                 <div class="left" @click="changeType(0)" :class="{'active' : type===0}">
                     <div class="title">包月套餐 <span>超值</span></div>
-                    <p>包月用不完，转结5个月</p>
+                    <p>包月用不完，续费累积5个月</p>
                 </div>
                 <div class="right" @click="changeType(1)" :class="{'active' : type===1}">
                     <div class="title">按次购买</div>
