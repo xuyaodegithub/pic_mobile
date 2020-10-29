@@ -54,6 +54,14 @@
                     <img src="http://deeplor.oss-cn-hangzhou.aliyuncs.com/upload/image/20200817/012d6aee5e6f4feeb6fb6d19ba68389f.jpg"/>
                     <img src="@/assets/images/fix.gif" alt="">
                 </div>
+                <div @click="toWeb(8)">
+                    <div class="decs">
+                        <h2>卡通漫画</h2>
+                        <p>图片变漫画</p>
+                    </div>
+                    <img src="http://deeplor.oss-cn-hangzhou.aliyuncs.com/upload/image/20200817/e1a76e075e0944e783d8aee11745fb5f.jpg"/>
+                    <img src="https://deeplor.oss-cn-hangzhou.aliyuncs.com/matting2/2020/10/19/cartoon.gif" alt="">
+                </div>
 
 
             </div>
@@ -120,8 +128,8 @@
         },
         methods: {
             toWeb(i) {
-                const urlList = ['people.html', 'object.html', 'headCutout.html', 'beautify.html', 'repairImg.html', 'guo.html', 'travle.html', 'currency.html'];
-                if ([2, 3, 4, 7].includes( i )) {
+                const urlList = ['people.html', 'object.html', 'headCutout.html', 'beautify.html', 'repairImg.html', 'guo.html', 'travle.html', 'currency.html','cartoonImage.html'];
+                if ([2, 3, 4, 7,8].includes( i )) {
                     this.url = urlList[i]
                     this.$refs.files.click()
                 } else window.location.href = urlList[i]
@@ -138,7 +146,7 @@
             upImg(e) {
                 Toast.loading()
                 let [file, fromData] = [e.target.files[0], new FormData()];
-                const idx = ['headCutout.html', 'beautify.html', 'repairImg.html','currency.html'].indexOf( this.url );
+                const idx = ['headCutout.html', 'beautify.html', 'repairImg.html','currency.html','cartoonImage.html'].indexOf( this.url );
                 if (idx === 2) {
                     compressImg( file ).then( blob => {
                         fromData.set( 'file', blob )

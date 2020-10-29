@@ -110,6 +110,13 @@ module.exports = {
             // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
             title: 'apis',
             // chunks: ['chunk-vendors', 'chunk-common', 'index']
+        },cartoonImage: {
+            entry: 'src/views/h_cartoon/index.js',
+            template: 'public/cartoonImage.html',
+            filename: 'cartoonImage.html',
+            // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
+            title: 'cartoonImage',
+            // chunks: ['chunk-vendors', 'chunk-common', 'index']
         },
     },
     configureWebpack: {
