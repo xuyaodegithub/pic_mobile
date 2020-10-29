@@ -20,8 +20,8 @@ export function getToken() {
 
 export function setToken(token) {
   // var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);//设置小于一天的时间
-  Cookies.set(TokenKey, token);
-  // let str=JSON.stringify(token),{ domain: '.picup.shop' }
+  Cookies.set(TokenKey, token,{ domain: '.picup.shop' });
+  // let str=JSON.stringify(token)
   // return localStorage.setItem(TokenKey, token)//存储是按照字符串存着，取出来后需要JSON.parse
 }
 
